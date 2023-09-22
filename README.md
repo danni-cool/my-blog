@@ -1,6 +1,6 @@
 ### 👋Hi there, I'm Daniel
 
->🌴I'm currently on vacation. If you're interested in hiring me, please feel free to send me an email.
+>🌴I'm currently on vocation. If you're interested in hiring me, please feel free to send me an email.
 
 ![Daniel's github activity](https://github-readme-stats.vercel.app/api?username=danni-cool&theme=onedark)
 
