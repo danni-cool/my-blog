@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/danni-cool/danni-cool/compare/v1.1.0...v1.2.0) (2023-10-08)
+
+
+### Features
+
+* 🎸 增加desc ([cab3589](https://github.com/danni-cool/danni-cool/commit/cab35890eab6888ff273b68bb0ca6a3bdbe091b3))
+
 ## 1.1.0 (2023-10-08)
 
 
