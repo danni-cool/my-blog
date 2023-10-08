@@ -1,0 +1,19 @@
+{
+  "name": "danni-cool",
+  "version": "1.3.1",
+  "description": "texsdasdf",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danni-cool/danni-cool.git"
+  },
+  "author": "chentianyu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danni-cool/danni-cool/issues"
+  },
+  "homepage": "https://github.com/danni-cool/danni-cool#readme"
+}

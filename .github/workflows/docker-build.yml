@@ -31,13 +31,17 @@ jobs:
       - name: Extract Latest Changelog
         id: extract_changelog
         run: |
-          # 获取最新的 tag
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          PREVIOUS_TAG=$(git describe --tags $LATEST_TAG^)
-          # 使用 awk 提取 changelog
-          LATEST_CHANGELOG=$(awk -v start="$LATEST_TAG" -v end="$PREVIOUS_TAG" '$0 ~ start {flag=1; next} $0 ~ end {flag=0} flag' CHANGELOG.md)
-          # 设置输出
-          echo "::set-output name=changelog::$LATEST_CHANGELOG"
+            # 获取最新的 tag
+            LATEST_TAG=$(git describe --tags --abbrev=0)
+            
+            # 尝试获取前一个 tag，如果失败则设置为一个不可能的值
+            PREVIOUS_TAG=$(git describe --tags $LATEST_TAG^ 2>/dev/null) || PREVIOUS_TAG="NON_EXISTENT_TAG"
+            
+            # 使用 awk 提取 changelog
+            LATEST_CHANGELOG=$(awk -v start="^#? ?\\[?${LATEST_TAG}\\]?" -v end="^#? ?\\[?${PREVIOUS_TAG}\\]?" '$0 ~ start {flag=1; next} $0 ~ end {flag=0; exit} flag' CHANGELOG.md)
+            
+            # 设置输出
+            echo "::set-output name=changelog::$LATEST_CHANGELOG"
 
       - name: Get Package Version
         id: get_version
