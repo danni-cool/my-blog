@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/danni-cool/danni-cool/compare/v1.5.0...v1.6.0) (2023-10-08)
+
+
+### Features
+
+* 🎸 测试ci ([376f460](https://github.com/danni-cool/danni-cool/commit/376f460fcd4a3fef9d8337551b758df9efa826c4))
+* 🎸 测试下tag-release脚本 ([ffd21c9](https://github.com/danni-cool/danni-cool/commit/ffd21c9148cd013b1ad388000aa1c681bd120118))
+* 🎸 调整命令 ([d685630](https://github.com/danni-cool/danni-cool/commit/d6856303696468e3776761175f202a6ce8be51f6))
+
 ## [1.5.0](https://github.com/danni-cool/danni-cool/compare/v1.4.0...v1.5.0) (2023-10-08)
 
 
