@@ -12,21 +12,16 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: SetUp Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
 
       - name: Generate changelog and push changes
         run: | 
             git config --global user.email "contact@danni.cool"
             git config --global user.name "gitHubCi"
             npx standard-version
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/danni-cool/danni-cool.git
             git push origin main
 
       - name: Extract Latest Changelog
