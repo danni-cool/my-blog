@@ -16,11 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install devDependencies
+        run: npm install --only=dev
+
       - name: Generate changelog and push changes
         run: | 
-            git config --global user.email "contact@danni.cool"
-            git config --global user.name "gitHubCi"
-            npx standard-version
+          npm run release
+          git config --global user.email "contact@danni.cool"
+          git config --global user.name "gitHubCi"
+          git add .
+          git commit -m "Commit changes for release"
+          git push origin main
 
       - name: Push changes
         run: git push --follow-tags origin main
