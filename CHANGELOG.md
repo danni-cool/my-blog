@@ -11,7 +11,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## 1.1.0 (2023-10-08)
 
-
 ### Features
 
 * 🎸 init commit ([9dcd6f1](https://github.com/danni-cool/danni-cool/commit/9dcd6f15421de4166df35f681951ac3a24736b1f))
