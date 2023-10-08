@@ -16,44 +16,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install devDependencies
-        run: npm install --only=dev
-
       - name: Generate changelog and push changes
         run: | 
-          git config --global user.email "contact@danni.cool"
-          git config --global user.name "gitHubCi"
-          npm run release
-          git push origin main
+            git config --global user.email "contact@danni.cool"
+            git config --global user.name "gitHubCi"
+            npx standard-version
 
-          
-      - name: Extract Latest Changelog
-        id: extract_changelog
-        run: |
-          # 获取最新的 tag
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          
-          # 尝试获取前一个 tag，如果失败则设置为一个不可能的值
-          PREVIOUS_TAG=$(git describe --tags $LATEST_TAG^ 2>/dev/null) || PREVIOUS_TAG="NON_EXISTENT_TAG"
-          
-          # 使用 awk 提取 changelog
-          LATEST_CHANGELOG=$(awk -v start="^#? ?\\[?$LATEST_TAG\\]?" -v end="^#? ?\\[?$PREVIOUS_TAG\\]?" '$0 ~ start {flag=1; next} $0 ~ end {flag=0; exit} flag' CHANGELOG.md)
-          
-          # 使用新的方式设置输出
-          echo "changelog=$LATEST_CHANGELOG" >> $GITHUB_ENV
-
-      - name: Get Package Version
-        id: get_version
-        run: echo "::set-output name=package_version::$(node -p "require('./package.json').version")"
-
-      - name: Create Github Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Push changes
+        run: git push --follow-tags origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.get_version.outputs.package_version }}
-          release_name: Release v${{ steps.get_version.outputs.package_version }}
-          body: ${{ steps.extract_changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
