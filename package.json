@@ -1,7 +1,7 @@
 {
   "name": "danni-cool",
   "version": "1.0.0",
-  "description": ">🌴I'm currently on vocation. If you're interested in hiring me, please feel free to send me an email.",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
