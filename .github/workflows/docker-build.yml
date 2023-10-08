@@ -21,8 +21,12 @@ jobs:
             git config --global user.email "contact@danni.cool"
             git config --global user.name "gitHubCi"
             npx standard-version
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/danni-cool/danni-cool.git
-            git push origin main
+
+      - name: Push changes
+        run: git push --follow-tags origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           
 
       - name: Extract Latest Changelog
         id: extract_changelog
