@@ -27,8 +27,6 @@ jobs:
             git config --global user.email "contact@danni.cool"
             git config --global user.name "gitHubCi"
             npx standard-version
-            git add .
-            git commit -m "Commit changes for release"
             git push --follow-tags origin main && npm publish
 
       - name: Extract Latest Changelog
