@@ -9,5 +9,5 @@
 - 🔭 Rich experience in web development, WeChat mini-programs, and using Node.js tools for efficiency.
 - ❤  Projects that are enjoyable, practical, and make a difference in lives catch my attention.
 - 📒 Focus on becoming a full-stack engineer and studying the balance between self-growth, work, and life.
-- 👏 It's welcome to bring me any fresh new inspiration on those topics above.👆
+- 👏 It's welcome to bring me any fresh new ideas on those topics above.👆
 
