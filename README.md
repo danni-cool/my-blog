@@ -9,7 +9,7 @@
 - 📒 Focus on becoming a full-stack engineer and studying the balance between self-growth, work, and life.
 - 👏 It's welcome to bring me any new ideas on those topics above.👆
 
-## Website
+## Blog
 [https://danni.cool](https://danni.cool)
 
 ## Sponsor Me
