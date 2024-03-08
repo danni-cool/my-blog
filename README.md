@@ -12,6 +12,6 @@
 ## Blog
 [https://danni.cool](https://danni.cool)
 
-## Support My Open-Source Works
+## Support
 [https://danni.cool/support-me](https://danni.cool/support-me)
 
