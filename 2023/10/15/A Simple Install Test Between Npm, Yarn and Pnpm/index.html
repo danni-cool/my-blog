@@ -23,9 +23,7 @@
 <meta property="og:site_name" content="Danni.cool - Daniel&#39;s Blog">
 <meta property="og:description" content="Installation size and time between package managers, and some thoughts in Github Actions">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/63b4c34f-e955-4471-b35b-5f3274202e2b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=845984b9766d5d74b9b314f4ec2be17000ee0f7078a190b935cae88b2c43da29&X-Amz-SignedHeaders=host&x-id=GetObject">
-<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/43658f9c-f84a-452a-af68-e3e185a498c5/Jietu20231206-154642.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=a62a17311d513eff38bfdbbba4526248a41e9b7b4fbfe7e1e08a7f90b5cfad5e&X-Amz-SignedHeaders=host&x-id=GetObject">
-<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/902b002a-78fb-4180-910a-e8dfbe90779c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=6a981056026645b4f6b829b365211e04377924ff9dd4050660aa7718c9cee164&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/b3413585214fbe5e53f701d88cd8bdd3.jpg">
 <meta property="article:published_time" content="2023-10-15T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-05-05T16:19:00.000Z">
 <meta property="article:author" content="Daniel Chan">
@@ -33,7 +31,7 @@
 <meta property="article:tag" content="Pnpm">
 <meta property="article:tag" content="Github Actions">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/63b4c34f-e955-4471-b35b-5f3274202e2b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=845984b9766d5d74b9b314f4ec2be17000ee0f7078a190b935cae88b2c43da29&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/b3413585214fbe5e53f701d88cd8bdd3.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -240,7 +238,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/b3413585214fbe5e53f701d88cd8bdd3.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -349,10 +347,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">FROM node:18-alpine<br><br>WORKDIR /app<br><br>COPY package.json pnpm-lock.yaml ./<br><br>RUN npm install -g pnpm &amp;&amp; pnpm install &amp;&amp; pnpm store prune &amp;&amp; npm uninstall pnpm -g<br></code></pre></td></tr></table></figure>
 
 
-<h1 id="Pnpm-Improves-Nothing"><a href="#Pnpm-Improves-Nothing" class="headerlink" title="Pnpm Improves Nothing?"></a>Pnpm Improves Nothing?</h1><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/63b4c34f-e955-4471-b35b-5f3274202e2b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=845984b9766d5d74b9b314f4ec2be17000ee0f7078a190b935cae88b2c43da29&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<h1 id="Pnpm-Improves-Nothing"><a href="#Pnpm-Improves-Nothing" class="headerlink" title="Pnpm Improves Nothing?"></a>Pnpm Improves Nothing?</h1><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/7b31bc2ab1890888ba0a53199fafe44b.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <p>We know, pnpm <strong>uses symbol links point to a global space to resolve the node_modules  in every project</strong>, <strong>so that each project installs modules only once in specific version, that’s one of the advantages why pnpm takes little space and install node_modules so quick.</strong></p>
 <p>With the high expectation of pnpm’s magic, I found the docker build speed is almost unchanged in Github Actions. 🤨</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/43658f9c-f84a-452a-af68-e3e185a498c5/Jietu20231206-154642.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=a62a17311d513eff38bfdbbba4526248a41e9b7b4fbfe7e1e08a7f90b5cfad5e&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Jietu20231206-154642.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/21ce41b0678696e994551a72f63a4409.jpg" srcset="/img/loading.gif" lazyload alt="Jietu20231206-154642.jpg"></p>
 <p>Why was that? In Github Runner, each building task owns a new environment. it means whether to choose npm , yarn or pnpm , they all need to reinstall again. </p>
 <h1 id="Github-Actions-Cache"><a href="#Github-Actions-Cache" class="headerlink" title="Github Actions Cache"></a>Github Actions Cache</h1><p>If you install node_modules in Github Actions workflow, there comes a way to cache dependencies and build outputs 👉 <a target="_blank" rel="noopener" href="https://github.com/actions/cache">https://github.com/actions/cache</a>.</p>
 <p>What my workflow does is to build dockerfile, upload to dockerHub, and then push a release PR. The <code>npm install</code> step is only running in docker building progress. So this cache method is helpless.</p>
@@ -413,7 +411,7 @@
 <h3 id="No-cache-but-with-lock-file"><a href="#No-cache-but-with-lock-file" class="headerlink" title="No cache but with lock file"></a>No cache but with lock file</h3><p>like the most common build scene, the installation time is roughly similar, but the size is still minimal via yarn installed, pnpm is at the bottom</p>
 <h3 id="Clear-cache-and-remove-package-manage"><a href="#Clear-cache-and-remove-package-manage" class="headerlink" title="Clear cache and remove package manage"></a>Clear cache and remove package manage</h3><p><strong>yarn</strong> is ahead over others in installation size, however, the node_modules that installed via pnpm comes an error when I try to launch my project. but I found it was my fault after I carefully debug the reason. </p>
 <p>I was tried to import the module called “<strong>file-box”</strong> which is not declared in the package.json**.** Actually, it’s a dependency of <a target="_blank" rel="noopener" href="https://github.com/wechaty/wechaty"><strong>Wechaty</strong></a>. </p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/902b002a-78fb-4180-910a-e8dfbe90779c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=6a981056026645b4f6b829b365211e04377924ff9dd4050660aa7718c9cee164&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@cdn/image/18a602bd544140a79ea214530bb70ce9.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <p><strong>Pnpm helped me find an potential issues, it called “</strong><a target="_blank" rel="noopener" href="https://broadcrunch.com/technology/computing/phantom-dependencies-in-nodejs-and-how-pnpm-prevents-them/"><strong>phantom dependencies</strong></a><strong>”.</strong></p>
 <p>Phantom dependencies is dangerous because it will cause error or crash if “Wechaty” don’t depends “file-box” anymore. Although it runs well in local dev.</p>
 <h1 id="Final-Thoughts"><a href="#Final-Thoughts" class="headerlink" title="Final Thoughts"></a><strong>Final Thoughts</strong></h1><ol>
