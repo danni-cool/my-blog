@@ -1,0 +1,25 @@
+@font-face {
+  font-family: inter-roman-latin;
+  src: url("../../../font/inter-roman-latin.woff2");
+}
+@font-face {
+  font-family: "my-iconfont"; /* Project id 4292839 */
+  src: url("//at.alicdn.com/t/c/font_4292839_d34uux7nfob.woff2?t=1698813209200") format('woff2'), url("//at.alicdn.com/t/c/font_4292839_d34uux7nfob.woff?t=1698813209200") format('woff'), url("//at.alicdn.com/t/c/font_4292839_d34uux7nfob.ttf?t=1698813209200") format('truetype');
+}
+.m-iconfont {
+  font-family: "my-iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #656d76;
+}
+.icon-link:before {
+  content: "\e653";
+}
+.icon-flowpath:before {
+  content: "\e66c";
+}
+.icon-rss:before {
+  content: "\e808";
+}

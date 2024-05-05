@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Daniel Chan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="微前端是一种适合超大型后台项目的架构，本文是一些实现实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于多页项目的微前端改造">
+<meta property="og:url" content="http://example.com/2021/09/10/%E5%9F%BA%E4%BA%8E%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%94%B9%E9%80%A0/index.html">
+<meta property="og:site_name" content="Danni.cool - Daniel&#39;s Blog">
+<meta property="og:description" content="微前端是一种适合超大型后台项目的架构，本文是一些实现实践">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/danni-cool/blog@master/image/5cd81a818b6f486682136aa0ba70b440.jpg">
+<meta property="article:published_time" content="2021-09-10T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-05-05T16:01:00.000Z">
+<meta property="article:author" content="Daniel Chan">
+<meta property="article:tag" content="single-spa">
+<meta property="article:tag" content="Micro-Frontends">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/danni-cool/blog@master/image/5cd81a818b6f486682136aa0ba70b440.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>基于多页项目的微前端改造 - Danni.cool - Daniel&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":35,"cursorChar":"_","loop":false,"scope":["post"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"javascript"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 45vh;">
+  <nav
+  id="navbar"
+  class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"
+>
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <!-- <strong>Danni.cool</strong> -->
+      <svg
+        version="1.1"
+        width="120"
+        height="34"
+        viewBox="0 0 2000 439"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <g id="marketing-masks">
+            <mask id="mask-marketing-M">
+              <path
+                class="styles_logoMask styles_doSvgAnimate"
+                stroke-width="65"
+                d="M 125.12546,243.55972 C 90.163936,244.5634 61.057209,270.4918 61.057209,270.4918 l -30.779524,67.36067 8.531282,62.71899 25.426563,18.83457 60.22081,-24.62517 34.79425,-65.57377 36.8016,-64.90465 25.42657,-62.22817 c 0,0 18.06624,-68.25025 21.41184,-72.26497 3.3456,-4.01472 7.36032,-52.191368 7.36032,-52.191368 l -20.0736,-54.867848 c 0,0 -31.44865,6.022081 -33.45601,8.698561 -2.00736,2.67648 -20.74272,46.838408 -23.4192,51.522248 -2.67648,4.683841 -21.91332,83.965087 -21.41185,98.360657 0.41867,12.01848 10.70592,86.31649 -13.3824,80.29441 -3.24571,-0.81143 7.36032,90.33122 7.36032,90.33122 l 21.41185,60.22081 39.47808,4.01472 36.80161,-21.41185 c 0,0 16.05888,-40.1472 18.06624,-46.8384 2.00736,-6.69121 18.06624,-64.23553 20.74273,-67.58114 2.67648,-3.3456 33.456,-27.43392 33.456,-27.43392 l 40.81633,-12.71328 13.3824,6.02208 -75.61057,26.7648 c 0,0 -16.91263,67.18526 -14.05153,68.91937 23.99494,14.54325 -10.29544,71.78742 -4.68384,74.27234 6.02572,2.6683 48.84577,-4.01472 48.84577,-4.01472 l 41.48545,-34.12513 c 0,0 -6.6912,-73.60321 18.73536,-40.81633 7.73686,9.97647 27.43392,-82.97088 27.43392,-82.97088 l -34.12512,-8.02945 4.01472,88.32385 8.69856,72.26498 c 0,0 21.12565,22.01074 22.08097,18.73536 4.68384,-16.05888 32.78688,-25.42656 32.78688,-25.42656 l 32.78689,-24.75745 6.6912,-47.50753 16.728,-58.21345 17.39712,-60.88992 -31.44864,145.19906 2.00736,60.22081 12.71328,-0.66912 3.3456,-32.11777 22.75008,-37.47072 14.05153,-36.80161 42.15456,-36.80161 40.14721,-35.67281 -3.3456,47.04786 c 0,0 6.6912,35.46336 -4.01472,39.47808 -3.96244,1.48591 -9.12446,42.27142 -11.37504,52.19137 -0.81843,3.60739 1.33824,38.80897 1.33824,38.80897 l 31.44864,7.36032 c 0,0 24.08833,-11.37504 30.77953,-12.71328 6.6912,-1.33825 44.16192,-27.43393 44.16192,-27.43393 l 8.02945,-46.16929 24.75744,-128.47106 c 0,0 -16.728,57.54433 -17.39712,62.89729 -0.66912,5.35296 -12.71328,167.94915 -12.71328,167.94915 l 22.08096,-50.18401 17.39712,-57.54433 24.75744,-38.80896 35.46337,-23.41921 41.48545,-22.75008 c 0,0 -6.02208,42.82369 -7.36032,48.84577 -1.33824,6.02208 -7.36033,45.50016 -8.02945,53.52961 -0.66912,8.02944 -8.02944,49.48181 -8.02944,53.49653 0,4.01472 44.83105,24.1214 44.83105,24.1214 l 44.83105,-23.41921 c 0,0 8.69856,-22.75008 12.71328,-30.1104 4.01472,-7.36032 -2.00736,-79.62529 -2.00736,-79.62529 l 68.91941,-241.552356 -26.09573,280.361316 -11.37504,79.62529 38.13987,2.00737 47.5075,-55.53697 109.7357,27.43393 13.3824,2.00735 -53.5296,30.11041 c 110.1036,15.71536 82.9843,-23.45845 113.7504,-39.47809 l 16.728,-78.95617 44.8311,-56.20609 60.2208,23.4192 -18.0663,58.88257 3.3456,-72.26497 -68.9193,1.33824 c 0,0 -28.7722,53.52961 -28.7722,59.55169 0,6.02208 -0.6691,65.57377 0,71.59585 0.6691,6.02208 41.4854,25.26122 41.4854,25.26122 0,0 38.809,6.6912 50.184,4.01472 11.3751,-2.67648 42.1546,-11.87882 42.1546,-11.87882 l 18.0663,-27.43392 19.4044,-56.20609 12.7133,-48.17665 58.2135,-23.4192 70.2576,59.48554 -46.1693,-58.81642 c 0,0 -64.9046,-7.36032 -70.2576,3.3456 -5.353,10.70592 -25.4266,76.27969 -25.4266,85.64737 0,9.36768 12.0442,71.59585 13.3824,75.61058 1.3383,4.01472 51.5222,3.1582 51.5222,3.1582 l 32.787,-11.18765 22.0809,-38.80896 6.0221,-24.75745 -35.4634,-62.89729 42.1546,46.16929 47.5075,10.0368 15.3898,-9.36768 c 0,0 26.7648,-40.1472 34.7942,-45.50017 8.0295,-5.35296 53.5297,-32.11776 57.5444,-33.456 4.0147,-1.33824 69.5885,39.47808 69.5885,39.47808 L 1662.7635,249.5818 c 0,0 -36.8016,25.42656 -39.4781,30.1104 -2.6765,4.68385 0.6691,60.90095 -0.6691,69.59952 -1.3383,8.69856 24.7574,65.56275 24.7574,65.56275 0,0 46.1693,5.35296 50.8531,6.02208 4.6839,0.66912 28.1031,-20.74273 28.1031,-20.74273 0,0 18.0662,-40.1472 20.0736,-45.50016 2.0073,-5.35296 4.6838,-57.54433 4.6838,-57.54433 l -48.1766,-42.15457 c 0,0 15.3897,52.19137 25.4265,56.20609 10.0368,4.01472 45.5002,15.38976 58.2135,16.05888 12.7133,0.66912 58.8826,-6.6912 58.8826,-6.6912 l 36.8016,-12.04416 30.7795,-40.81633 14.7206,-47.50752 22.7501,-62.89729 15.3898,-49.51489 -4.0147,-82.599408 -34.7943,-2.378848 -40.8163,35.463365 -20.7427,72.264971 -17.3972,78.28705 -14.7206,78.28706 2.0074,53.5296 34.7942,68.91938 36.1325,11.37504 49.5149,-18.73537 23.4192,-32.78688 12.0442,-42.15456"
+              ></path>
+            </mask>
+          </g>
+        </defs>
+        <path
+          d="m 271.7372,332.83517 q 6.03377,0 9.5612,5.56964 3.43461,5.56963 3.43461,15.31648 v 0 q 0,18.56544 -8.81859,28.77643 v 0 q -19.02957,23.2068 -41.77224,39.63722 -22.74266,16.52324 -45.02119,16.52324 v 0 q -35.27433,0 -53.83977,-41.3081 v 0 q -19.49371,24.5992 -34.06758,32.95365 -14.666702,8.35445 -34.160412,8.35445 v 0 q -28.3123,0 -46.59925,-21.07177 Q 2.0741876,396.4218 2.0741876,362.53988 v 0 q 0,-37.13088 15.7806204,-68.97061 15.78063,-31.7469 43.44313,-51.98323 27.56968,-20.14351 61.915742,-23.85659 v 0 q 8.81858,-90.04239 33.69627,-153.907497 24.78487,-63.77228522 65.1647,-63.77228522 v 0 q 19.95785,0 33.23214,18.10130422 13.18146,18.101303 13.18146,54.768047 v 0 q 0,51.983231 -25.52748,121.603631 -25.52748,69.6204 -68.22799,142.95388 v 0 q 1.85654,26.91989 8.16879,38.52329 6.21942,11.6034 15.96628,11.6034 v 0 q 12.53167,0 25.52748,-11.13926 12.99581,-11.13927 34.8102,-37.13088 v 0 q 5.56963,-6.49791 12.53167,-6.49791 z M 216.96915,45.534995 q -8.81858,0 -17.63717,31.282766 -8.81858,31.375589 -15.038,81.966409 -6.31225,50.59083 -9.09707,105.82301 v 0 Q 227.18014,151.358 227.18014,82.665875 v 0 q 0,-17.637168 -2.97047,-27.384024 -3.06329,-9.746856 -7.24052,-9.746856 z M 83.297988,391.78044 q 8.81858,0 17.637172,-7.24052 8.81858,-7.14769 22.27852,-26.6414 v 0 q -4.64136,-25.06335 -4.64136,-56.16046 v 0 q 0,-11.13926 0.92827,-36.20261 v 0 q -25.527472,7.89032 -42.422022,34.06759 -16.98738,26.27009 -16.98738,58.29548 v 0 q 0,33.88192 23.2068,33.88192 z m 216.287372,46.87774 q -28.77643,0 -45.94946,-20.88612 -17.17304,-20.88612 -17.17304,-54.76805 v 0 q 0,-37.13088 17.17304,-70.36301 17.17303,-33.13931 45.67098,-53.37564 28.59078,-20.14351 60.61616,-20.14351 v 0 q 10.21099,0 13.6456,3.89875 3.52743,3.99157 5.84811,14.20256 v 0 q 9.74686,-1.85655 20.42199,-1.85655 v 0 q 22.74266,0 22.74266,16.24476 v 0 q 0,9.74686 -6.96204,46.4136 v 0 q -10.67513,53.37564 -10.67513,74.26176 v 0 q 0,6.96204 3.43461,11.13927 3.52743,4.17722 9.09707,4.17722 v 0 q 8.81858,0 21.35025,-11.41774 12.53167,-11.32492 33.88193,-36.8524 v 0 q 5.56963,-6.49791 12.53167,-6.49791 v 0 q 6.03377,0 9.46837,5.56964 3.52744,5.56963 3.52744,15.31648 v 0 q 0,18.56544 -8.81859,28.77643 v 0 q -19.02957,23.67094 -40.37983,39.9157 -21.35025,16.24476 -41.3081,16.24476 v 0 q -15.31649,0 -28.12664,-10.48947 -12.71733,-10.39665 -19.21523,-28.49795 v 0 q -24.13507,38.98742 -60.80182,38.98742 z m 16.7089,-46.87774 q 10.21099,0 19.49371,-12.06753 9.28272,-12.06754 13.45994,-32.02539 v 0 l 17.17304,-85.40102 q -19.49372,0.46414 -36.01696,14.57387 -16.43041,14.20256 -26.17727,37.40936 -9.74686,23.2068 -9.74686,49.19842 v 0 q 0,14.38821 5.75529,21.35025 5.84811,6.96204 16.05911,6.96204 z m 177.29995,46.87774 q -17.63717,0 -24.87769,-18.56544 -7.1477,-18.56544 -7.1477,-59.40941 v 0 q 0,-60.33768 17.17304,-114.64159 v 0 q 4.17722,-13.45994 13.64559,-19.77219 9.56121,-6.21942 26.73424,-6.21942 v 0 q 9.28272,0 12.99581,2.32068 3.71308,2.32068 3.71308,8.81858 v 0 q 0,7.42618 -6.96204,33.41779 v 0 q -4.64136,18.56544 -7.42617,32.48952 -2.78482,13.92408 -4.64136,34.34607 v 0 q 15.31649,-39.9157 34.34606,-64.97904 19.02958,-25.06335 37.31654,-35.73848 18.37978,-10.67512 33.69627,-10.67512 v 0 q 30.16884,0 30.16884,30.16884 v 0 q 0,18.1013 -10.21099,65.44317 v 0 q -8.81859,40.37983 -8.81859,53.37564 v 0 q 0,18.56544 13.45995,18.56544 v 0 q 9.28272,0 22.00004,-11.41774 12.81016,-11.32492 34.16041,-36.8524 v 0 q 5.47681,-6.49791 12.43885,-6.49791 v 0 q 6.12659,0 9.5612,5.56964 3.52743,5.56963 3.52743,15.31648 v 0 q 0,18.56544 -8.81858,28.77643 v 0 q -19.95785,24.59921 -42.979,40.37984 -22.92831,15.78062 -52.16888,15.78062 v 0 q -23.67094,0 -35.73847,-13.73843 -12.06754,-13.64559 -12.06754,-39.63721 v 0 q 0,-12.99581 6.40508,-46.4136 v 0 q 6.12659,-29.24057 6.12659,-40.37983 v 0 q 0,-7.42618 -5.10549,-7.42618 v 0 q -6.03377,0 -16.98738,15.50215 -10.86078,15.59497 -22.27853,41.12244 -11.32492,25.52748 -18.28696,53.83978 v 0 q -5.10549,21.81439 -11.88188,29.42622 -6.68356,7.70466 -21.07177,7.70466 z m 230.11862,0 q -17.63716,0 -24.78486,-18.56544 -7.24052,-18.56544 -7.24052,-59.40941 v 0 q 0,-60.33768 17.17303,-114.64159 v 0 q 4.17723,-13.45994 13.73843,-19.77219 9.46837,-6.21942 26.6414,-6.21942 v 0 q 9.28272,0 12.99581,2.32068 3.71309,2.32068 3.71309,8.81858 v 0 q 0,7.42618 -6.96204,33.41779 v 0 q -4.64136,18.56544 -7.42618,32.48952 -2.78481,13.92408 -4.64136,34.34607 v 0 q 15.31649,-39.9157 34.34607,-64.97904 19.02957,-25.06335 37.40936,-35.73848 18.28696,-10.67512 33.60345,-10.67512 v 0 q 30.16884,0 30.16884,30.16884 v 0 q 0,18.1013 -10.211,65.44317 v 0 q -8.81858,40.37983 -8.81858,53.37564 v 0 q 0,18.56544 13.45994,18.56544 v 0 q 9.28272,0 22.09288,-11.41774 12.71732,-11.32492 34.06758,-36.8524 v 0 q 5.56963,-6.49791 12.53167,-6.49791 v 0 q 6.03377,0 9.5612,5.56964 3.43461,5.56963 3.43461,15.31648 v 0 q 0,18.56544 -8.81859,28.77643 v 0 q -19.95784,24.59921 -42.88616,40.37984 -23.02115,15.78062 -52.26171,15.78062 v 0 q -23.67094,0 -35.73848,-13.73843 -12.06753,-13.64559 -12.06753,-39.63721 v 0 q 0,-12.99581 6.4979,-46.4136 v 0 q 6.03377,-29.24057 6.03377,-40.37983 v 0 q 0,-7.42618 -5.1055,-7.42618 v 0 q -6.03376,0 -16.89455,15.50215 -10.95361,15.59497 -22.27852,41.12244 -11.41775,25.52748 -18.37979,53.83978 v 0 q -5.1055,21.81439 -11.78905,29.42622 -6.77639,7.70466 -21.16461,7.70466 z M 981.77245,189.41715 q -19.49371,0 -29.24057,-9.09706 -9.74686,-9.00424 -9.74686,-25.249 v 0 q 0,-16.24476 12.81016,-27.19837 12.71732,-10.86078 31.7469,-10.86078 v 0 q 17.17302,0 27.84812,8.35444 10.6751,8.35445 10.6751,23.67094 v 0 q 0,18.56544 -12.0675,29.42622 -12.0675,10.95361 -32.02535,10.95361 z m -3.71309,249.24103 q -30.16884,0 -43.81444,-21.35026 -13.73842,-21.35025 -13.73842,-56.62459 v 0 q 0,-20.88612 5.38397,-53.65412 5.29115,-32.67517 13.6456,-60.98747 v 0 q 4.17723,-14.85235 11.13927,-20.42198 6.96204,-5.56963 22.27852,-5.56963 v 0 q 23.67094,0 23.67094,15.78062 v 0 q 0,11.6034 -8.81858,53.83978 v 0 q -11.13927,51.05496 -11.13927,69.15626 v 0 q 0,13.92408 3.71309,21.35025 3.71309,7.42618 12.53167,7.42618 v 0 q 8.35439,0 20.88609,-11.6034 12.5317,-11.6034 33.4178,-36.66674 v 0 q 5.5696,-6.49791 12.5317,-6.49791 v 0 q 6.0337,0 9.5612,5.56964 3.4346,5.56963 3.4346,15.31648 v 0 q 0,18.56544 -8.8186,28.77643 v 0 q -45.9495,56.16046 -85.86514,56.16046 z m 154.09314,0 q -20.422,0 -30.9115,-11.13926 -10.3966,-11.13927 -10.3966,-29.24057 v 0 q 0,-20.88612 11.789,-33.41779 11.8819,-12.53168 33.2322,-12.53168 v 0 q 20.4219,0 30.8186,9.93252 10.4895,10.02533 10.4895,29.51904 v 0 q 0,21.35026 -12.0676,34.06759 -12.0675,12.81015 -32.9536,12.81015 z m 175.9075,0 q -45.4854,0 -70.8272,-25.80596 -25.249,-25.71314 -25.249,-67.94951 v 0 q 0,-37.59502 14.8524,-65.90731 14.8523,-28.3123 38.5233,-43.62879 23.6709,-15.31648 49.6625,-15.31648 v 0 q 25.5275,0 39.6372,15.038 14.2026,15.13084 14.2026,38.80177 v 0 q 0,19.49371 -8.633,32.95366 -8.5401,13.45994 -22.4641,13.45994 v 0 q -8.8186,0 -14.2026,-4.17722 -5.2911,-4.17723 -5.2911,-11.6034 v 0 q 0,-3.24895 0.9282,-7.42618 0.9283,-4.17722 1.3924,-6.03377 v 0 q 2.3207,-6.96204 2.3207,-12.9958 v 0 q 0,-6.03377 -3.0633,-9.28272 -2.9705,-3.24896 -8.5401,-3.24896 v 0 q -10.6751,0 -19.9578,9.46838 -9.2828,9.5612 -14.8524,25.80596 -5.5696,16.24476 -5.5696,35.73847 v 0 q 0,53.83978 46.8777,53.83978 v 0 q 19.0296,0 41.0296,-12.81016 22.0929,-12.71732 43.4432,-38.2448 v 0 q 5.5696,-6.49791 12.5316,-6.49791 v 0 q 6.0338,0 9.4684,5.56964 3.5274,5.56963 3.5274,15.31648 v 0 q 0,17.63717 -8.8185,28.77643 v 0 q -21.8144,26.91989 -52.2617,41.49376 -30.3545,14.6667 -58.6668,14.6667 z m 318.7686,-144.81043 q 6.0337,0 9.2827,6.03377 3.2489,6.03377 3.2489,15.31649 v 0 q 0,22.27852 -13.4599,26.45575 v 0 q -27.8482,9.74685 -61.266,11.13926 v 0 q -8.8185,38.98742 -34.8102,62.47271 -25.9916,23.39245 -58.9452,23.39245 v 0 q -27.8482,0 -47.5276,-13.45994 -19.7721,-13.45995 -29.9831,-35.73848 -10.211,-22.27852 -10.211,-48.27014 v 0 q 0,-35.27433 13.4599,-62.93684 13.46,-27.56968 37.1309,-43.16465 23.6709,-15.50214 52.4474,-15.50214 v 0 q 35.2743,0 56.903,24.32073 21.5359,24.41355 25.249,60.15202 v 0 q 21.8144,-1.39241 51.9833,-9.28272 v 0 q 3.713,-0.92827 6.4979,-0.92827 z m -152.2366,95.61201 q 14.8523,0 25.8059,-12.06753 10.8608,-12.06754 14.5739,-34.8102 v 0 q -14.3882,-9.74686 -22.0001,-25.52748 -7.7046,-15.78062 -7.7046,-33.41779 v 0 q 0,-7.42618 1.3924,-14.85235 v 0 h -2.3207 q -18.5654,0 -30.8186,17.82282 -12.346,17.91565 -12.346,50.40517 v 0 q 0,25.52748 10.0253,38.98742 9.9325,13.45994 23.3925,13.45994 z m 361.5619,-95.61201 q 6.0338,0 9.2827,6.03377 3.249,6.03377 3.249,15.31649 v 0 q 0,22.27852 -13.46,26.45575 v 0 q -27.8481,9.74685 -61.2659,11.13926 v 0 q -8.8186,38.98742 -34.8102,62.47271 -25.9916,23.39245 -58.9453,23.39245 v 0 q -27.8482,0 -47.5275,-13.45994 -19.7722,-13.45995 -29.9832,-35.73848 -10.211,-22.27852 -10.211,-48.27014 v 0 q 0,-35.27433 13.4599,-62.93684 13.46,-27.56968 37.1309,-43.16465 23.671,-15.50214 52.4474,-15.50214 v 0 q 35.2743,0 56.9031,24.32073 21.5359,24.41355 25.249,60.15202 v 0 q 21.8144,-1.39241 51.9832,-9.28272 v 0 q 3.7131,-0.92827 6.4979,-0.92827 z m -152.2366,95.61201 q 14.8523,0 25.806,-12.06753 10.8607,-12.06754 14.5738,-34.8102 v 0 q -14.3882,-9.74686 -22,-25.52748 -7.7047,-15.78062 -7.7047,-33.41779 v 0 q 0,-7.42618 1.3924,-14.85235 v 0 h -2.3207 q -18.5654,0 -30.8186,17.82282 -12.346,17.91565 -12.346,50.40517 v 0 q 0,25.52748 10.0253,38.98742 9.9325,13.45994 23.3925,13.45994 z m 300.7601,-56.62459 q 6.0338,0 9.4684,5.56964 3.5274,5.56963 3.5274,15.31648 v 0 q 0,18.56544 -8.8186,28.77643 v 0 q -19.9578,24.59921 -43.4431,40.37984 -23.3924,15.78062 -53.0971,15.78062 v 0 q -40.844,0 -60.6162,-37.13088 -19.6794,-37.13088 -19.6794,-96.07615 v 0 q 0,-56.62459 14.5739,-129.02981 14.6667,-72.40521 43.1646,-124.388441 28.5908,-51.98323122 68.0424,-51.98323122 v 0 q 22.2785,0 34.9958,20.60763822 12.8102,20.700465 12.8102,59.223753 v 0 q 0,55.232181 -30.633,128.101531 -30.633,72.86935 -83.0803,144.34629 v 0 q 3.2489,19.02958 10.6751,27.10555 7.4262,8.16879 19.4937,8.16879 v 0 q 19.0296,0 33.4178,-10.95361 14.3882,-10.86078 36.6667,-37.31653 v 0 q 5.5697,-6.49791 12.5317,-6.49791 z M 1927.5887,45.999131 q -10.6751,0 -24.1351,38.523288 -13.4599,38.523281 -23.6709,95.612011 -10.211,57.08873 -11.1393,109.5361 v 0 q 32.9537,-54.30392 52.4474,-108.88631 19.4937,-54.48956 19.4937,-99.510753 v 0 q 0,-35.274336 -12.9958,-35.274336 z"
+          opacity="1"
+          fill="#fff"
+          mask="url(#mask-marketing-M)"
+          id="logo-svg"
+          stroke-width="9.28272"
+        ></path>
+      </svg>
+    </a>
+
+    <button
+      id="navbar-toggler-btn"
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+            
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/"
+            target="_self"
+          >
+            <i class="iconfont icon-home-fill"></i>
+            <span>首页</span>
+          </a>
+        </li>
+             
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/archives/"
+            target="_self"
+          >
+            <i class="iconfont icon-archive-fill"></i>
+            <span>归档</span>
+          </a>
+        </li>
+             
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/categories/"
+            target="_self"
+          >
+            <i class="iconfont icon-category-fill"></i>
+            <span>分类</span>
+          </a>
+        </li>
+             
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/tags/"
+            target="_self"
+          >
+            <i class="iconfont icon-tags-fill"></i>
+            <span>标签</span>
+          </a>
+        </li>
+             
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/about/"
+            target="_self"
+          >
+            <i class="iconfont icon-user-fill"></i>
+            <span>关于</span>
+          </a>
+        </li>
+          
+        <li class="nav-item" id="search-btn">
+          <a
+            class="nav-link"
+            target="_self"
+            href="javascript:;"
+            data-toggle="modal"
+            data-target="#modalSearch"
+            aria-label="Search"
+          >
+            <i class="iconfont icon-search"></i>
+          </a>
+        </li>
+          
+        <li class="nav-item" id="color-toggle-btn">
+          <a
+            class="nav-link"
+            target="_self"
+            href="javascript:;"
+            aria-label="Color Toggle"
+          >
+            <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/danni-cool/blog@master/image/5cd81a818b6f486682136aa0ba70b440.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">基于多页项目的微前端改造</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-09-10 08:00" pubdate>
+          2021年9月10日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">基于多页项目的微前端改造</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年5月6日 凌晨
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Techniques, strategies and recipes for building a modern web app with multiple teams using different JavaScript frameworks.—— Micro Frontends</p>
+<p>一种可以让多个团队使用不同JavaScript框架的技术、策略和方法 —— 微前端</p>
+<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>丁香人才运营管理后台是一个面向运营使用的后台管理系统，方便运营在后台去配置一些运营活动从而减少开发手动写代码去配置功能的问题。管理后台的前端技术架构是一个基于vue全家桶的多页应用，重构前有33 个独立入口页面，并未做相关整合。</p>
+<p>由于页面之间的互相跳转，应用之间切换造成了浏览器重刷，运营在流程操作上存在断点。同时产品也希望想将要原先分散在不同入口之间的应用整合到一个页面，目前还存在多种不同组合的情况。</p>
+<p>如果每个入口都增加一个侧边栏组件，开发成本就是N * repeat。而基于原先的多页应用，使用微前端的架构可以平滑过渡，同时也不会产生侧边栏代码一式多份的问题。借着这个机会我在微前端做出了一些探索。</p>
+<h1 id="二、当前的痛点"><a href="#二、当前的痛点" class="headerlink" title="二、当前的痛点"></a>二、当前的痛点</h1><ol>
+<li><strong>客户 or 产品需求（定制化）</strong></li>
+<li>由于产品之间相互跳转，应用之间切换会造成浏览器重刷，流程体验上会存在断点,这也是运营和产品上的痛点 ✅</li>
+<li>每个功能模块比较独立、有特色。如果说将来需要拆分组成一个大单页的话，拆分+组合工作量大，后期tab菜单再整合的时候还需要继续拆分+组合。 ✅</li>
+<li><strong>开发&amp;运维成本</strong></li>
+<li>每次开发一个新模块都需要向后端提供一个新入口文件，后端告知前端路由地址，新模块部署成本。 ✅</li>
+<li>（未来）<del>多人合作开发同一种产品，但现有发布的耦合性降低了交付效率</del> ✅</li>
+<li><strong>多页应用（multi-page application）的问题</strong></li>
+<li>使用多页应用的方式去搭建后台产品，随着应用的复杂度的提升，代码的构建变得越来越慢 ✅</li>
+<li>公共资源无法复用，页面刷新时，静态资源需要反复加载，降低了交互体验 ✅</li>
+<li>多个页面状态共享变得很困难 ✅</li>
+</ol>
+<p><strong>相对比SPA：</strong></p>
+<p>SPA 则天生具备体验上的优势，应用直接无刷新切换，能极大的保证多产品之间流程操作串联时的流程性。缺点则在于各应用技术栈之间是强耦合的。</p>
+<p>所以有没有一种办法既可以保证拥有单页应用的体验，又可以兼容多个技术战的兼容呢？</p>
+<p>答案是微前端。</p>
+<h1 id="三、微前端是什么？"><a href="#三、微前端是什么？" class="headerlink" title="三、微前端是什么？"></a>三、微前端是什么？</h1><p>微前端是一种新架构风格，最早由 ThoughtWorks 于2016年提出，将后端微服务的理念应用于浏览器端，即将 Web 应用<strong>由单一的单体应用转变为多个小型前端应用聚合为一</strong>的应用。 其中众多独立交付的前端应用组合成一个大型整体。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/80cdb43d9e6255002a0d5341af1b730c.png" srcset="/img/loading.gif" lazyload alt="1572839045880-4d255d03-31b2-4f5a-9d68-c501954c8217.png"></p>
+<p>在 ThoughtWorks 正式发布的最新一期（2019年4月）<a target="_blank" rel="noopener" href="https://www.thoughtworks.com/cn/radar">技术雷达</a>中，微前端已经进入到<strong>采纳</strong>（adopt）阶段，而且它<strong>强烈推荐</strong>我们在合适的项目中应该使用这个方案。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/b77d9bd2eba157bf88929d9acdf83350.png" srcset="/img/loading.gif" lazyload alt="1572759229607-09c5e615-1f16-4b1a-ba68-e9eea382669c.png"></p>
+<h1 id="四、微前端的价值"><a href="#四、微前端的价值" class="headerlink" title="四、微前端的价值"></a>四、微前端的价值</h1><p>微前端架构旨在解决单体应用在一个相对长的时间跨度下，由于参与的人员、团队的增多、变迁，从一个普通应用演变成一个<strong>巨石应用</strong>( Frontend Monolith )后，随之而来的应用不可维护的问题。这类问题在企业级 Web 应用中尤其常见。</p>
+<ul>
+<li><strong>技术选型灵活</strong>：主框架不限制接入应用的技术栈，可以使用市面上所有的前端技术栈子应用具备完全自主权</li>
+<li><strong>独立开发、独立部署</strong>：子应用仓库独立，每个前端应用都可独立开发，部署完成后主框架自动完成同步更新</li>
+<li><strong>独立运行</strong>：每个子应用之间状态隔离，运行时状态不共享，只需要遵循统一的接口规范或者框架，相互之间是不存在依赖关系的。</li>
+<li><strong>容错</strong>：单个应用模块挂了不会影响其他模块</li>
+<li><strong>可扩展性</strong>：单每一个服务可以独立横向扩展满足业务伸缩性</li>
+</ul>
+<h1 id="五、透视微前端架构"><a href="#五、透视微前端架构" class="headerlink" title="五、透视微前端架构"></a>五、透视微前端架构</h1><p>微前端有多种实现方式，这次主要讲现在社区里用的比较多的一种实现方式——使用模块加载器聚合多个单页应用这种方式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/9a46bfd47807ceaf28040e08adbf3080.png" srcset="/img/loading.gif" lazyload alt="1572953521033-2144d2cc-7365-4a50-87d5-1d85ae3ebec2.png"></p>
+<p>这种实现方式下，核心的模块加载器在路由规则匹配的条件下负责<strong>注册</strong>、<strong>装载</strong>和<strong>卸载</strong>子应用。</p>
+<p>相比较于单页应用是<strong>应用分发路由，</strong>微前端的实现方式则是<strong>路由分发应用。</strong></p>
+<h1 id="六、微前端两种集成方式"><a href="#六、微前端两种集成方式" class="headerlink" title="六、微前端两种集成方式"></a>六、微前端两种集成方式</h1><p>讲完架构上的特点，我们聊一聊微前端在开发到构建流程上的一个变化。</p>
+<h2 id="1-构建时集成"><a href="#1-构建时集成" class="headerlink" title="1.构建时集成"></a>1.构建时集成</h2><p>在开发时，应用都是以单一、微小应用的形式存在，而在运行时，则通过构建系统合并这些应用，组合成一个新的应用。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/7bdd10b5e2fec5487dad257fbcbc2dd6.png" srcset="/img/loading.gif" lazyload alt="1572951849540-b1582413-5f17-4ba8-bd2a-cb26751d5152.png"></p>
+<p><strong>这种开发模式有以下特点：</strong></p>
+<ol>
+<li>代码由统一仓库管理，只有一个git项目托管</li>
+<li>具体不同应用开发通过git 功能分支去约束</li>
+<li>使用构建系统实现依赖的打包和分离</li>
+<li>比较适合项目初期代码量不是很大，模块少，编译时间短的情况下</li>
+</ol>
+<p><strong>优点：</strong></p>
+<p>✅ 依赖版本很容易管理，也能享受构建工具在依赖和code split上带来的好处</p>
+<p>✅ 一次最多只需要构建一个项目</p>
+<p><strong>缺点：</strong></p>
+<p>⚠️在开发模块时改动portal的顶层路由等会产生冲突</p>
+<p>⚠️代码构建时间跟着模块增加而增加</p>
+<h2 id="2-运行时集成"><a href="#2-运行时集成" class="headerlink" title="2.运行时集成"></a>2.运行时集成</h2><p>子应用自己打包，并将各个代码自己上传到服务器上，由在运行时，我们只需要加载相应的业务模块即可。对应的，在更新代码的时候，我们只需要更新对应的模块即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/f5bd437c5e8c2dc1b6ea69a376d3012b.png" srcset="/img/loading.gif" lazyload alt="1573058236756-a2efc7e0-27c1-4440-8b0d-03c544101ca5.png"></p>
+<h2 id="3-两者对比"><a href="#3-两者对比" class="headerlink" title="3.两者对比"></a>3.两者对比</h2><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/15642b73aebb33cc93e974a2a1c753bd.png" srcset="/img/loading.gif" lazyload alt="1573058351895-29ff8a63-e549-40a9-8b00-270c3a50498f.png"></p>
+<h1 id="七、技术方案"><a href="#七、技术方案" class="headerlink" title="七、技术方案"></a>七、技术方案</h1><p>对于我来说，这些东西都是可选择的，比如独立部署和运行是适合项目扩展到多团队，大代码库的方案，那现在还是可以使用内置构建集成的方式，享受一下webpack tree-shaking 和 code Split 的便利，只不过说在代码层面要做好子应用的概念，这样在抽离成为可以独立部署的模块时的再次改造成本不会很大。</p>
+<p>目前我选择了</p>
+<ul>
+<li>子应用使用统一的技术栈vue</li>
+<li>大仓库模式（构建时集成）</li>
+<li>vuex 作为状态管理（原先是redux）</li>
+<li>singleSPA.js 作为模块加载器</li>
+</ul>
+<p>微前端有许多实现方式，今天我们只讲基于 <a target="_blank" rel="noopener" href="https://single-spa.js.org/">singleSPA</a> 框架做的「构建时集成」的整合方案。</p>
+<p>singleSPA 是一个模块加载器，在portal 页面的管理其他框架的生命周期，加载或者卸载他们。</p>
+<h2 id="1-建立门户（portal）应用"><a href="#1-建立门户（portal）应用" class="headerlink" title="1.建立门户（portal）应用"></a>1.建立门户（portal）应用</h2><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/25a43c84ac6d4ed69272f46992dde750.jpg" srcset="/img/loading.gif" lazyload alt="https___cdn_%E5%89%AF%E6%9C%AC.jpg"></p>
+<p>“Portal项目”提供注册的接口，“子项目”进行注册，最终聚合成一个类单页应用。在整套机制中，比较核心的部分是路由注册机制，“子项目”的路由应该由自己控制，而整个系统的导航是“Portal项目”提供的。</p>
+<p>同时，我们还要</p>
+<ul>
+<li>呈现公用的页面元素，比如侧边栏、头部栏目</li>
+<li>路由功能，告诉每个微应用何时启动</li>
+<li>封装共全局调用的底层方法和服务</li>
+<li>解决鉴权问题</li>
+</ul>
+<h3 id="代码目录的重新规划"><a href="#代码目录的重新规划" class="headerlink" title="代码目录的重新规划"></a>代码目录的重新规划</h3><p>以类似单页应用的结构规划portal应用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/0b6ac004db67e96717a7740116ee3109.png" srcset="/img/loading.gif" lazyload alt="1572948379567-60b7ae85-176b-442b-a1db-a58bc0e74b51.png"></p>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>项目中引入 singleSPA 和其提供的vue实例注册插件</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">npm i single-spa single-spa-vue -d<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="启动文件-app-js"><a href="#启动文件-app-js" class="headerlink" title="启动文件 app.js"></a>启动文件 app.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; registerApplication, start &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;single-spa&#x27;</span>;<br><br><span class="hljs-title function_">registerApplication</span>(<br>  <span class="hljs-string">&quot;applicationName&quot;</span>, <span class="hljs-comment">// 应用唯一名字</span><br>  <span class="hljs-function">()=&gt;</span><span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;view/app1/main.js&quot;</span>), <span class="hljs-comment">//以异步组件的方式引进来</span><br>  location.<span class="hljs-property">pathname</span>.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&quot;/app1/&quot;</span>) === <span class="hljs-number">0</span> <span class="hljs-comment">// 应用在路由匹配时展示，</span><br>);<br><br><span class="hljs-comment">//启动应用</span><br><span class="hljs-title function_">start</span>();<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="模板文件-index-html"><a href="#模板文件-index-html" class="headerlink" title="模板文件 index.html"></a>模板文件 index.html</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width,initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>丁香人才管理后台 - jobmd_admin<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>   	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--	此部分动态插入，减少对后端依赖</span><br><span class="hljs-comment">  	&lt;div id=&quot;sideBar&quot;&gt;&lt;/div&gt;</span><br><span class="hljs-comment">   		&lt;div class=&quot;container&quot;&gt;</span><br><span class="hljs-comment">      	&lt;div id=&quot;container&quot;&gt;&lt;/div&gt;</span><br><span class="hljs-comment">  		&lt;/div&gt;</span><br><span class="hljs-comment">		&lt;/div&gt;</span><br><span class="hljs-comment">		 --&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- webpack script files will be auto injected --&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="2-包装现有vue应用"><a href="#2-包装现有vue应用" class="headerlink" title="2.包装现有vue应用"></a>2.包装现有vue应用</h2><h3 id="vue模块"><a href="#vue模块" class="headerlink" title="vue模块"></a>vue模块</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//page1/page1.app.js</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Vue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span>;<br><span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./router&#x27;</span>;<br><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;store&#x27;</span>;<br><span class="hljs-keyword">import</span> singleSpaVue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;single-spa-vue&#x27;</span>;<br><br><span class="hljs-keyword">const</span> vueLifecycles = <span class="hljs-title function_">singleSpaVue</span>(&#123;<br>  <span class="hljs-title class_">Vue</span>,<br>  <span class="hljs-attr">appOptions</span>: &#123;<br>    <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> <span class="hljs-title function_">h</span>(<span class="hljs-title class_">App</span>),<br>    <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#container&#x27;</span><br>    router,<br>  &#125;,<br>&#125;);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> bootstrap = vueLifecycles.<span class="hljs-property">bootstrap</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> mount = vueLifecycles.<span class="hljs-property">mount</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> unmount = vueLifecycles.<span class="hljs-property">unmount</span>;<br><br></code></pre></td></tr></table></figure>
+
+
+<p>到这里，最简单的只有一个微应用的项目已经完成了，有木有很简单？但多个应用之间切换其实还有很多东西要做，路由的切换得自己写。</p>
+<h2 id="3-公共应用-侧边栏"><a href="#3-公共应用-侧边栏" class="headerlink" title="3.公共应用-侧边栏"></a>3.公共应用-侧边栏</h2><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/757c5ef20bcd6a4b5af8874112e7794a.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ol>
+<li>侧边栏是portal常显的子应用，所以在 <code>app.js</code> 使用 <code>registerApplication</code> 注册的时候，第三参数需要始终为 <code>true</code> 这样即使路由变化，侧边栏页永远不会消失。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// side模块</span><br><span class="hljs-title function_">registerApplication</span>(<span class="hljs-string">&quot;sideBar&quot;</span>, <span class="hljs-function">()=&gt;</span><span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;view/app1/sideBar.app.js&quot;</span>),<br>  <span class="hljs-literal">true</span> <span class="hljs-comment">// 始终展示则返回true</span><br>);<br><br><span class="hljs-comment">// 其他模块</span><br><span class="hljs-title function_">registerApplication</span>(<span class="hljs-string">&quot;otherApplication&quot;</span>, <span class="hljs-function">()=&gt;</span><span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;view/app1/otherApplication.app.js&quot;</span>),<br>  <span class="hljs-function">() =&gt;</span> location.<span class="hljs-property">pathname</span>.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&quot;/otherApplication/&quot;</span>) === <span class="hljs-number">0</span><br>);<br><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>侧边栏有多种组合方式，所以需要使用配置项来维护。</li>
+</ol>
+<p>运营C端</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/2e0f7c2799557f47a96cc70b2d4d99e4.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p>任务中心</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/4c3aaa660a53872573f924251d12dadc.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p>小程序</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/b927a785bc194941a83d1613a34de2af.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">// 根路由重定向</span><br>  <span class="hljs-attr">homeRedirect</span>: <span class="hljs-string">&#x27;#/miniProgramMHR/userManage&#x27;</span>,<br><br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * 以下配置menu</span><br><span class="hljs-comment">   * 注意：key值不能相同，不然这里注册的高亮和展开二级菜单必定显示不正常</span><br><span class="hljs-comment">   *  */</span><br>  <span class="hljs-attr">menuList</span>: [<br>    &#123;<br>      <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;home&#x27;</span>,<br>      <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;管理后台首页&#x27;</span>,<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/admin/guessoneguess.do&#x27;</span> <span class="hljs-comment">// 外链不以#开头</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;miniProgramMHR&#x27;</span>,<br>      <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;MHR小程序管理&#x27;</span>,<br>      <span class="hljs-attr">children</span>: [<br>        &#123;<br>          <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;用户管理&#x27;</span>,<br>          <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;userManage&#x27;</span>,<br>          <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;#/miniProgramMHR/userManage&#x27;</span>,<br>          <span class="hljs-attr">component</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;../../view/miniProgramMHR/userManage/app.js&#x27;</span>)<br>        &#125;<br>      ]<br>    &#125;<br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="4-路由和组件注册"><a href="#4-路由和组件注册" class="headerlink" title="4.路由和组件注册"></a>4.路由和组件注册</h2><p>因为考虑到url的history模式对服务器有改造成本，所以下面都是以hash模式去做路由的管理。</p>
+<p>应用的路由在singleSPA里注册，“应用的子项目”的路由应该由自己控制</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/e77f04ffd859a6d46f126a2b799afc8b.jpg" srcset="/img/loading.gif" lazyload alt="123123.jpg"></p>
+<h3 id="query部分"><a href="#query部分" class="headerlink" title="query部分"></a>query部分</h3><p>区分不同的侧边栏，从而加载不同的侧边栏配置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/8db07f9b0faf054389b3597e3407e773.png" srcset="/img/loading.gif" lazyload alt="1573051069905-cbcb8650-46ed-45f3-ae20-389d8e17929b.png"></p>
+<h3 id="hash部分"><a href="#hash部分" class="headerlink" title="hash部分"></a>hash部分</h3><p>用来定义父子路由</p>
+<p><strong>父路由 router.mhr.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">menuList</span>: [<br>  &#123;<br>    <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;home&#x27;</span>,<br>    <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;管理后台首页&#x27;</span>,<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/admin/guessoneguess.do&#x27;</span> <span class="hljs-comment">// 外链不以#开头</span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;miniProgramMHR&#x27;</span>,<br>    <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;MHR小程序管理&#x27;</span>,<br>    <span class="hljs-attr">children</span>: [<br>      &#123;<br>        <span class="hljs-attr">menuName</span>: <span class="hljs-string">&#x27;用户管理&#x27;</span>,<br>        <span class="hljs-attr">key</span>: <span class="hljs-string">&#x27;userManage&#x27;</span>,<br>        <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;#/miniProgramMHR/userManage&#x27;</span>,<br>        <span class="hljs-attr">component</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;../../view/miniProgramMHR/userManage/app.js&#x27;</span>)<br>      &#125;<br>    ]<br>  &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+
+<p><strong>子路由 page1&#x2F;page1.router.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Router</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue-router&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Router</span>(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/miniProgramMHR/userManage&#x27;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;list&#x27;</span>,<br>      <span class="hljs-attr">component</span>: <span class="hljs-title class_">List</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/miniProgramMHR/userManage/detail&#x27;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;detail&#x27;</span>,<br>      <span class="hljs-attr">component</span>: <span class="hljs-title class_">Detail</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/miniProgramMHR/userManage/audit&#x27;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;audit&#x27;</span>,<br>      <span class="hljs-attr">component</span>: <span class="hljs-title class_">Detail</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/miniProgramMHR/userManage/edit&#x27;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;edit&#x27;</span>,<br>      <span class="hljs-attr">component</span>: <span class="hljs-title class_">Detail</span><br>    &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="全局状态管理方案"><a href="#全局状态管理方案" class="headerlink" title="全局状态管理方案"></a>全局状态管理方案</h3><p>侧边栏应用需要tab名称、父子之间的级联关系和对应的路由，而portal应用则需要知道当前注册哪些组件，对应的路由关系如何，这部分放在portal应用层面去做会比较好，所以他们之间的共享状态我们需要通过一个状态管理去共享，路由变化后，由portal 告诉侧边栏，展示哪些配置项，当前哪个是高亮选项。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/db1a18eb3187af85cd6a49258cf42504.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>因为使用了vue全家桶，vuex用起来就很得心应手，但如果是多种技术栈的话，redux也可以选择</p>
+<p>需要的子应用注入store</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/index&#x27;</span><br><br><span class="hljs-keyword">const</span> vueLifeCycles = <span class="hljs-title function_">singleSpaVue</span>(&#123;<br>  <span class="hljs-title class_">Vue</span>,<br>  <span class="hljs-attr">appOptions</span>: &#123;<br>    <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> <span class="hljs-title function_">h</span>(<span class="hljs-title class_">App</span>),<br>    <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#sideBar&#x27;</span>,<br>    store<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+<p>portal 应用 app.js在路由变化时commit事件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./store/index&#x27;</span><br><br><span class="hljs-comment">// 设置高亮模块</span><br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;single-spa:routing-event&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 根路由的话跳转</span><br>  <span class="hljs-keyword">if</span> (location.<span class="hljs-property">hash</span> === <span class="hljs-string">&#x27;#/&#x27;</span> || location.<span class="hljs-property">hash</span> === <span class="hljs-string">&#x27;&#x27;</span>) &#123;<br>    <span class="hljs-title function_">navigateToUrl</span>(homeRedirect)<br>    <span class="hljs-keyword">return</span><br>  &#125;<br>  store.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;SET_SIDEBAR&#x27;</span>, &#123;<span class="hljs-attr">menu</span>: menuList, <span class="hljs-attr">highlightTab</span>: <span class="hljs-title function_">getCurrentMenuName</span>(menuList)&#125;)<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="6-公共服务"><a href="#6-公共服务" class="headerlink" title="6.公共服务"></a>6.公共服务</h2><p>现在每个子应用都是独立的，会存在共享一些底层服务的情况，比如我们封装一个axios的 request.js 去拦截一些异常情况统一处理，一些公共服务比如请求loading，toast就比较适合放在portal这层</p>
+<p>通过将实例挂载在window上实现方法上的共享</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> showLoading = <span class="hljs-variable language_">window</span>.<span class="hljs-property">$service</span>.<span class="hljs-property">showLoading</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> hideLoading = <span class="hljs-variable language_">window</span>.<span class="hljs-property">$service</span>.<span class="hljs-property">hideLoading</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Message</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">$service</span>.<span class="hljs-property">Message</span><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="7-样式隔离"><a href="#7-样式隔离" class="headerlink" title="7.样式隔离"></a>7.样式隔离</h2><p>多个子应用之间开发，最不能出现的就是样式之间的相互引用和覆盖，在这一层面上，需要极力去避免，我们要防止这种情况的发生，目前还是通过vue scoped style 去避免，后期应该使用babel在打包阶段就加上命名空间。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/e4f1024b4a0a4de1537af45d45433dd9.png" srcset="/img/loading.gif" lazyload alt="1573058034037-304f9182-da46-4d4f-a4f7-82eeac5b06c0.png"></p>
+<h2 id="8-公共依赖抽离"><a href="#8-公共依赖抽离" class="headerlink" title="8.公共依赖抽离"></a>8.公共依赖抽离</h2><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/blog/image/0a16e249f298b75422cb8cee9135d222.png" srcset="/img/loading.gif" lazyload alt="1573059190834-fefe4fb7-72c7-4e29-92ea-9105185904e2.png"></p>
+<h2 id="9-完整版-app-js"><a href="#9-完整版-app-js" class="headerlink" title="9.完整版 app.js"></a>9.完整版 app.js</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; start, registerApplication, navigateToUrl &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;single-spa&#x27;</span><br><span class="hljs-keyword">import</span> &#123; matchRoute, getRouteMap, getCurrentMenuName &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./router/utils&#x27;</span><br><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./store/index&#x27;</span><br><span class="hljs-keyword">import</span> getUrlQuery <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/single-spa/utils/getUrlQuery&#x27;</span><br><span class="hljs-keyword">import</span> &#123;sideBarComponent, sideBarMenu&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./router/index&#x27;</span><br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./utils/service&#x27;</span> <span class="hljs-comment">// 全局提示组件</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;iview/dist/styles/iview.css&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./style/index.less&#x27;</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> *  动态插入dom挂载节点，减少对后端依赖</span><br><span class="hljs-comment"> * &lt;div id=&quot;app&quot;&gt;</span><br><span class="hljs-comment"> *    &lt;div id=&quot;sideBar&quot;&gt;&lt;/div&gt;</span><br><span class="hljs-comment"> *    &lt;div class=&quot;container&quot;&gt;</span><br><span class="hljs-comment"> *        &lt;div id=&quot;container&quot;&gt;&lt;/div&gt;</span><br><span class="hljs-comment"> *    &lt;/div&gt;</span><br><span class="hljs-comment"> * &lt;/div&gt;</span><br><span class="hljs-comment"> *  */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">initDomHook</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> frag = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createDocumentFragment</span>()<br>  <span class="hljs-keyword">const</span> sideBarEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;DIV&#x27;</span>)<br>  <span class="hljs-keyword">const</span> containerEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;DIV&#x27;</span>)<br>  <span class="hljs-keyword">const</span> appEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;DIV&#x27;</span>)<br><br>  sideBarEl.<span class="hljs-property">id</span> = <span class="hljs-string">&#x27;sideBar&#x27;</span><br>  appEl.<span class="hljs-property">id</span> = <span class="hljs-string">&#x27;container&#x27;</span><br>  containerEl.<span class="hljs-property">className</span> = <span class="hljs-string">&#x27;container&#x27;</span><br><br>  frag.<span class="hljs-title function_">appendChild</span>(sideBarEl)<br>  frag.<span class="hljs-title function_">appendChild</span>(containerEl)<br>  frag.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.container&#x27;</span>).<span class="hljs-title function_">append</span>(appEl)<br><br>  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;#app&#x27;</span>).<span class="hljs-title function_">append</span>(frag)<br>&#125;<br><br><span class="hljs-comment">// 绑定路由事件</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">bindRouterEvent</span>(<span class="hljs-params">menuList, homeRedirect</span>) &#123;<br>  <span class="hljs-comment">// 设置高亮模块</span><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;single-spa:routing-event&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 根路由的话跳转</span><br>    <span class="hljs-keyword">if</span> (location.<span class="hljs-property">hash</span> === <span class="hljs-string">&#x27;#/&#x27;</span> || location.<span class="hljs-property">hash</span> === <span class="hljs-string">&#x27;&#x27;</span>) &#123;<br>      <span class="hljs-title function_">navigateToUrl</span>(homeRedirect)<br>      <span class="hljs-keyword">return</span><br>    &#125;<br>    store.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;SET_SIDEBAR&#x27;</span>, &#123;<span class="hljs-attr">menu</span>: menuList, <span class="hljs-attr">highlightTab</span>: <span class="hljs-title function_">getCurrentMenuName</span>(menuList)&#125;)<br>  &#125;)<br>&#125;<br><br><span class="hljs-comment">// 注册路由和侧边栏</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">registerRouter</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 根据当前路由注册app</span><br>  <span class="hljs-title function_">registerApplication</span>(sideBarComponent.<span class="hljs-property">key</span>, sideBarComponent.<span class="hljs-property">component</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-literal">true</span>)<br><br>  <span class="hljs-comment">// 注册当前的menu菜单</span><br>  <span class="hljs-keyword">const</span> currentApp = <span class="hljs-title function_">getUrlQuery</span>(<span class="hljs-string">&#x27;app&#x27;</span>) <span class="hljs-comment">// exp: ?app=&quot;2c&quot;</span><br>  <span class="hljs-keyword">const</span> currentAppCfg = sideBarMenu[currentApp]<br><br>  <span class="hljs-keyword">if</span> (!currentApp) &#123;<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;未发现?app=参数，应用启动失败&#x27;</span>)&#125;<br>  <span class="hljs-keyword">if</span> (!currentAppCfg) &#123;<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`未找到?app=<span class="hljs-subst">$&#123;currentApp&#125;</span> 匹配的路由，应用启动失败`</span>)&#125;<br><br>  <span class="hljs-keyword">const</span> &#123; menuList, homeRedirect &#125; = currentAppCfg<br><br>  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(<span class="hljs-title function_">getRouteMap</span>(menuList)).<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;<br>    item.<span class="hljs-property">component</span> &amp;&amp; <span class="hljs-title function_">registerApplication</span>(item.<span class="hljs-property">key</span>, item.<span class="hljs-property">component</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">matchRoute</span>(item.<span class="hljs-property">path</span>))<br>  &#125;)<br><br>  <span class="hljs-title function_">bindRouterEvent</span>(menuList, homeRedirect)<br><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-property">store</span> = store<br>&#125;<br><br><br>;(<span class="hljs-keyword">function</span> <span class="hljs-title function_">init</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">registerRouter</span>()<br>  <span class="hljs-title function_">initDomHook</span>()<br>  <span class="hljs-title function_">start</span>()<br>&#125;)()<br><br></code></pre></td></tr></table></figure>
+
+
+<h1 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h1><ol>
+<li>我们如何实现在一个页面里渲染多种技术栈? singleSPA</li>
+<li>不同独立模块之间如何通讯? 现成的状态管理使用全局状态管理注入各个子应用</li>
+<li>如何通过路由渲染到正确的模块? 通过自己定义的路由规则，通过hash路由的方式管理子模块</li>
+<li>在不同子应用之间的路由该如何正确触发? 统一位置管理，防止命名冲突</li>
+<li>项目代码别切割之后,通过何种方式合并到一起? 构建时集成，分包通过异步组件加载过来</li>
+<li>前端微服务化后我们该如何编写我们的代码? 去router定义顶层路由，通过hash子路由管理自己路由</li>
+<li>独立团队之间该如何协作? git分支功能分支</li>
+</ol>
+<h1 id="九、TODO"><a href="#九、TODO" class="headerlink" title="九、TODO"></a>九、TODO</h1><ul>
+<li>动态增减应用依赖</li>
+<li>vendor打包只打包公共依赖，各自依赖自己管理</li>
+<li>cli 使开发新模块和新项目更简单</li>
+<li>css 作用域的严格隔离</li>
+<li>contentHash</li>
+<li>运行时依赖</li>
+</ul>
+<h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/chentianyu/ykdmaz/ela3k3#8JBgz">infoQ - 大前端时代下的微前端架构</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5cadd7835188251b2f3a4bb0">掘金 - 微前端实践</a></li>
+<li><a target="_blank" rel="noopener" href="http://insights.thoughtworkers.org/micro-frontends-1/">ThoughtWorks洞见 -「微前端」- 将微服务理念扩展到前端开发（理论篇）</a></li>
+<li><a target="_blank" rel="noopener" href="http://insights.thoughtworks.cn/micro-frontends-2/">ThoughtWorks洞见 -「微前端」- 将微服务理念扩展到前端开发（实战篇）</a></li>
+<li><a target="_blank" rel="noopener" href="https://yq.aliyun.com/articles/715922">云栖社区 - 可能是你见过最完善的微前端解决方案</a><a target="_blank" rel="noopener" href="https://juejin.im/post/5cadd7835188251b2f3a4bb0"></a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Tech/" class="category-chain-item">Tech</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/single-spa/" class="print-no-link">#single-spa</a>
+      
+        <a href="/tags/Micro-Frontends/" class="print-no-link">#Micro-Frontends</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基于多页项目的微前端改造</div>
+      <div>http://example.com/2021/09/10/基于多页项目的微前端改造/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Daniel Chan</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年9月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/16/A%20Simple%20Install%20Test%20Between%20Npm,%20Yarn%20and%20Pnpm/" title="A Simple Install Test Between Npm, Yarn and Pnpm">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">A Simple Install Test Between Npm, Yarn and Pnpm</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/09/06/G2%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B1%95%E7%A4%BA%E6%A8%A1%E5%9D%97/" title="G2实现大数据展示模块">
+                        <span class="hidden-mobile">G2实现大数据展示模块</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'danni-cool/danni-cool');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'Comment');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      
+        <div class="copyright-info">All Copyright <a target="_blank" rel="noopener" href="//danni.cool">©️danni.cool</a> Reserved. 2019 - 2024</div>
+      
+      <ul class="footer-other-info"><li><i class="m-iconfont icon-link"></i><a href="/links">Friend Links</a></li></ul>
+    </div>
+
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
