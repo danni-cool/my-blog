@@ -19,19 +19,36 @@
     <meta name="description" content="一次恶补正太分布函数和用G2 api画图的崎岖历程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="G2实现大数据展示模块">
-<meta property="og:url" content="http://example.com/2019/09/06/G2%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B1%95%E7%A4%BA%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:url" content="http://example.com/2019/09/05/G2%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B1%95%E7%A4%BA%E6%A8%A1%E5%9D%97/index.html">
 <meta property="og:site_name" content="Danni.cool - Daniel&#39;s Blog">
 <meta property="og:description" content="一次恶补正太分布函数和用G2 api画图的崎岖历程">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/da30d0efd7373b2f8b5e0e19d4a1981c.jpg">
-<meta property="article:published_time" content="2019-09-06T00:00:00.000Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/jpeg/193055/1567610715274-0d2e6f41-d7c3-4b21-a165-4b4d525423a1.jpeg?x-oss-process=image/format,webp/resize,w_1500,limit_0/interlace,1">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/c84fb388-7131-42dc-8018-7cf715875154/Untitled.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=af4eb542e05dffc64ce14cdc085a3fdb946458fc067a4a7b67ced5b33c13e532&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567615980097-741ce71b-ec50-47fe-9608-5e78bf2e2c72.png?x-oss-process=image/format,webp/resize,w_657,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567698476394-79dbdf0e-a87d-43e5-865c-740fe8d40518.png?x-oss-process=image/format,webp/resize,w_1500,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567738830152-8a0fd8be-f933-462d-9859-2012cae4c04a.png?x-oss-process=image/format,webp/resize,w_788,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567747687152-fd8043b4-0e81-4e57-9a94-d22307064f5f.png?x-oss-process=image/format,webp/resize,w_1072,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567749607066-84314abe-dd4e-4999-ae52-8138a75ebe2d.png?x-oss-process=image/format,webp/resize,w_205,limit_0">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/afd6c7b0-ecb7-44e7-953f-174ee2eacad9/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180428Z&X-Amz-Expires=3600&X-Amz-Signature=1b4e8f971c06478172c325389992f9c0738e13eb2e2a065e6123b8e2eb552550&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/92d64f9e-9191-4e9e-a2f4-63d06bd2ed36/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180429Z&X-Amz-Expires=3600&X-Amz-Signature=a8885e2e4d9b65853f39dbe499f96efa5e704be955308aca197420a516e0612d&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567748640065-fc0616af-306f-4808-887f-e3d8faa8bcd3.png?x-oss-process=image/format,webp/resize,w_1500,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567751903041-fff1eb54-a6df-4bd3-9243-6c14fedc208c.png?x-oss-process=image/format,webp/resize,w_802,limit_0">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2019/png/193055/1567754481251-27cb8214-8470-4b6e-87a7-7881ea3318a0.png?x-oss-process=image/format,webp/resize,w_766,limit_0">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/a20fd59d-1c5e-4f57-8d60-5834892d0f4b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=1b39757f5fb57da3462fd06fc24a96e92b63108e3e530c56c4756dc7ff0b286d&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/8d2f362a-ef18-49d6-8fe5-adf2824c22d3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=729085c110d25bed7d21f4881f3106276670ff6833c560c80592f4d87c637414&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/7f77c8e9-e71b-4718-b433-c202d600438c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=6e92cf27a0e95bf9c39dc01b2be67b42c2c14ec62aba8ccc5f596c262fa404f4&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/409672f4-4e78-408f-b97b-607fa3f31f93/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=d46203ce3b6bef04d1098fa3590e25ac62f8fc34f49e58a7f0d5d57b43f15e66&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/61dc78ea-91f0-463a-b52e-a0f6f6b975ef/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=20ba279e331ceecd6c6ab2cf44224a1ddaa9a704aba81b60e5bbe4fbe2042b01&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/d15b1abd-f0cc-4675-a1b9-bf4fe3ede54e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=4a3f71fd3a2adba1ef6486af6f8da5e39fe135dcaada93d45d46c2c54e0f1537&X-Amz-SignedHeaders=host&x-id=GetObject">
+<meta property="article:published_time" content="2019-09-05T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-05-05T16:01:00.000Z">
 <meta property="article:author" content="Daniel Chan">
 <meta property="article:tag" content="G2">
 <meta property="article:tag" content="Canvas">
 <meta property="article:tag" content="SVG">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/da30d0efd7373b2f8b5e0e19d4a1981c.jpg">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/jpeg/193055/1567610715274-0d2e6f41-d7c3-4b21-a165-4b4d525423a1.jpeg?x-oss-process=image/format,webp/resize,w_1500,limit_0/interlace,1">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -238,7 +255,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/da30d0efd7373b2f8b5e0e19d4a1981c.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -255,8 +272,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2019-09-06 08:00" pubdate>
-          2019年9月6日 早上
+        <time datetime="2019-09-06 00:00" pubdate>
+          2019年9月6日 凌晨
         </time>
       </span>
     
@@ -337,7 +354,7 @@
               <div class="markdown-body">
                 
                 <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本次回顾了业务需求里大数据模块的实现过程。该项目发布以后之前有投屏在公司大屏上，某天偶然经过以后看了很自豪啊哈哈。回顾心路历程，从接到需求后恶补正态分布函数，到技术选型中途从D3转向G2，再到G2图表实现到80%以后，发现其动效方面API能力不足之后硬核做完以后可谓一波三折，该需求一共做了6天，今天刚好回顾一下，正好也可以和之前开发使用过的eChart、D3做一个简单的对比。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/bc2b40e50b4f83e0c1f47520034c507e.jpeg" srcset="/img/loading.gif" lazyload alt="1567610715274-0d2e6f41-d7c3-4b21-a165-4b4d525423a1.jpeg"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/jpeg/193055/1567610715274-0d2e6f41-d7c3-4b21-a165-4b4d525423a1.jpeg?x-oss-process=image/format,webp/resize,w_1500,limit_0/interlace,1" srcset="/img/loading.gif" lazyload alt="1567610715274-0d2e6f41-d7c3-4b21-a165-4b4d525423a1.jpeg"></p>
 <h1 id="一、需求分析"><a href="#一、需求分析" class="headerlink" title="一、需求分析"></a>一、需求分析</h1><p>需求很简单，大数据模块需要前端画两个图，一个是面积曲线图、一个是环形进度条。</p>
 <h2 id="面积曲线图"><a href="#面积曲线图" class="headerlink" title="面积曲线图"></a>面积曲线图</h2><ul>
 <li>面积曲线图需要使用曲线绘制出固定的走势</li>
@@ -351,31 +368,31 @@
 <li>环形进度条有个白色圆跟着动</li>
 </ul>
 <p>emmmm….需求看起来好像不过分</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/69a80c41d02875c5c4cc747fb59af25f.gif" srcset="/img/loading.gif" lazyload alt="Untitled.gif"></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/c84fb388-7131-42dc-8018-7cf715875154/Untitled.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=af4eb542e05dffc64ce14cdc085a3fdb946458fc067a4a7b67ced5b33c13e532&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.gif"></p>
 <h1 id="二、画图届的PK"><a href="#二、画图届的PK" class="headerlink" title="二、画图届的PK"></a>二、画图届的PK</h1><p>听到数据可视化需求，马上脑袋里出现三大框架，<del>vue，react、angular</del>，是 echart、G2、D3。</p>
 <h2 id="多而全的EChart"><a href="#多而全的EChart" class="headerlink" title="多而全的EChart"></a>多而全的EChart</h2><p>以前用echart做过移动端的饼图和折线图，而echart作为一款开箱即用的图表库，确实很方便，但是echart的定制能力比较弱，对于这么简单的图估计光查api和删减配置项就要弄很久，而且最后是否能还原到设计稿这样样式应该是个问号？不过之所以用惯了echart的一步到位，也想探究下画图更加偏底层的内容。</p>
 <h2 id="陡峭的D3"><a href="#陡峭的D3" class="headerlink" title="陡峭的D3"></a>陡峭的D3</h2><p>G2是画图届的面团，可定制化能力比echart相对高，用它来实现应该没问题。好，那我还是用D3吧，这样我就可以给大家写一篇D3的分享了，不过大家也发现了，最终文章的标题是讲 G2而不是D3，因为在D3上碰壁了。</p>
 <p>我们简单说一下D3和G2的区别，D3简称“画图届的jquery”，因为D3是基于SVG的，而G2则是基于Canvas（当然3.2.7版本也开始支持以SVG渲染），两者其实各有优缺点，「数据可视化小组」最近搬运的这篇文章</p>
 <p><a target="_blank" rel="noopener" href="https://www.yuque.com/docs/share/eda67c40-b202-48d3-97b7-fb7a59a2cc26">《选择Canvas还是SVG》</a>简单介绍了Canvas 和 SVG的适用场景和性能差异。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/5ceb9b790534c2c3fc05d2384a90d915.png" srcset="/img/loading.gif" lazyload alt="1567615980097-741ce71b-ec50-47fe-9608-5e78bf2e2c72.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567615980097-741ce71b-ec50-47fe-9608-5e78bf2e2c72.png?x-oss-process=image/format,webp/resize,w_657,limit_0" srcset="/img/loading.gif" lazyload alt="1567615980097-741ce71b-ec50-47fe-9608-5e78bf2e2c72.png"></p>
 <p><strong>简单摘录一下：</strong></p>
 <p>如果单就图表库的视角来看，选择 Canvas 和 SVG 各有千秋。小画布、大数据量的场景适合用 Canvas，譬如热力图、大数据量的散点图等。如果画布非常大，有缩放、平移等高频的交互，或者移动端对内存占用量非常敏感等场景，可以使用 SVG 的方案。</p>
 <h3 id="为什么初期使用D3不是一个好的选择？"><a href="#为什么初期使用D3不是一个好的选择？" class="headerlink" title="为什么初期使用D3不是一个好的选择？"></a>为什么初期使用D3不是一个好的选择？</h3><p>好了，接下来我们说一说为什么刚上来就使用D3不是一个好的选择？</p>
 <p>首先你得储备大量SVG相关的知识，但如果你之前没接触过SVG绘图的话，就会花大量的时间成本下去，</p>
 <p>D3主要是和DOM交互，比如SVG有六大预设图形：矩形rect、圆形circle、椭圆ellipse、线条line、折线polyline、多边形polygon，另外再加一个万能的路径path</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/5eaa7db45657c134c696ba6d3d98aab6.png" srcset="/img/loading.gif" lazyload alt="1567698476394-79dbdf0e-a87d-43e5-865c-740fe8d40518.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567698476394-79dbdf0e-a87d-43e5-865c-740fe8d40518.png?x-oss-process=image/format,webp/resize,w_1500,limit_0" srcset="/img/loading.gif" lazyload alt="1567698476394-79dbdf0e-a87d-43e5-865c-740fe8d40518.png"></p>
 <p>当你决定使用D3画图时，你就会不能避免的接触这些标签的绘图属性，特别是当你要使用这么一堆属性来绘图的时候，你还得去学每个图形的属性，那真的是会增加很多时间成本。当然，D3已经帮你做了很多封装，即使这样我还是觉得要了解太多SVG的知识，才能把一个图画好。比如我们看一个简单的示例</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012303584">《D3简单入门》</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.w3schools.com/graphics/svg_path.asp">《w3cSchool - svg path》</a></li>
 </ul>
 <p>这个其实就有点类似于用CSS3动画去实现复杂的H5动画，这一点其实我还是建议使用可视化的方式去调整，之前项目里我做过一个带路径的体验地图（红框部分），其路径就是直接通过设计稿sketch生成的，路劲的行径动效则是根据数值的百分比的位置计算出来的，光这个动效从预研到实现用了2天。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/d33cbdad757b1a51ed0c6765c6afacbf.png" srcset="/img/loading.gif" lazyload alt="1567738830152-8a0fd8be-f933-462d-9859-2012cae4c04a.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567738830152-8a0fd8be-f933-462d-9859-2012cae4c04a.png?x-oss-process=image/format,webp/resize,w_788,limit_0" srcset="/img/loading.gif" lazyload alt="1567738830152-8a0fd8be-f933-462d-9859-2012cae4c04a.png"></p>
 <p>其次，还需要掌握一些算法和数学函数，比如这次画这个像抛物线（后面会讲），画圆弧，这些SVG固然有很多预设可以选，但是你要让他们动起来，就必须使用 path，而path几乎是一个点一个点绘制的，这才造就了SVG的无限可能。</p>
 <p><strong>这是我中途放弃D3的原因。</strong></p>
 <p>当然，使用D3比纯用JS去操作SVG还是有其优势的，这个后面再单独开一章节讲。</p>
 <h1 id="三、用G2把图画好"><a href="#三、用G2把图画好" class="headerlink" title="三、用G2把图画好"></a>三、用G2把图画好</h1><h2 id="面积图"><a href="#面积图" class="headerlink" title="面积图"></a>面积图</h2><p>你使用G2的话，其实有一种找回echart的感觉, 通过官网去找示例，<a target="_blank" rel="noopener" href="https://antv.alipay.com/zh-cn/g2/3.x/demo/area/basic.html">面积图</a> 比较符合我们的诉求，通过简单的chart.line() 就能绘制出平滑的曲线。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/0b154b66ca3f9bbbe813876de5c7ed04.png" srcset="/img/loading.gif" lazyload alt="1567747687152-fd8043b4-0e81-4e57-9a94-d22307064f5f.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567747687152-fd8043b4-0e81-4e57-9a94-d22307064f5f.png?x-oss-process=image/format,webp/resize,w_1072,limit_0" srcset="/img/loading.gif" lazyload alt="1567747687152-fd8043b4-0e81-4e57-9a94-d22307064f5f.png"></p>
 <p>这个图的难点在于以下三个方面：</p>
 <ul>
 <li>曲线部分，因为要画出类似设计稿的平滑曲线，所以就不能只使用几个点的标记，我们需要一连串的坐标，这次得益于算法组的帮助，告诉我这是一条正态分布曲线图。</li>
@@ -386,12 +403,12 @@
 <p>若<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F/828980">随机变量</a>X服从一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/5362790">数学期望</a>为μ、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%96%B9%E5%B7%AE/3108412">方差</a>（σ^2）的正态分布，记为N(μ，σ^2)。其<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0/5021996">概率密度函数</a>为正态分布的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%9F%E6%9C%9B%E5%80%BC/8664642">期望值</a>μ决定了其位置，其<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%A0%87%E5%87%86%E5%B7%AE/1415772">标准差</a>σ决定了分布的幅度。当μ &#x3D; 0,σ &#x3D; 1时的正态分布是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%A0%87%E5%87%86%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83">标准正态分布</a>。</p>
 </blockquote>
 <p>它的函数大概长这样</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/1682c3895374d065c038a4cb23ec30e4.png" srcset="/img/loading.gif" lazyload alt="1567749607066-84314abe-dd4e-4999-ae52-8138a75ebe2d.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567749607066-84314abe-dd4e-4999-ae52-8138a75ebe2d.png?x-oss-process=image/format,webp/resize,w_205,limit_0" srcset="/img/loading.gif" lazyload alt="1567749607066-84314abe-dd4e-4999-ae52-8138a75ebe2d.png"></p>
 <p>画到图形上</p>
 <p><strong>一般正态分布函数</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/aab56c82bd2177262817055b34e2ab33.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/afd6c7b0-ecb7-44e7-953f-174ee2eacad9/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180428Z&X-Amz-Expires=3600&X-Amz-Signature=1b4e8f971c06478172c325389992f9c0738e13eb2e2a065e6123b8e2eb552550&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <p><strong>μ &#x3D; 0,σ &#x3D; 1，为标准正态分布</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/1643c8b622dd00aee4f87baec1d8b87a.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/92d64f9e-9191-4e9e-a2f4-63d06bd2ed36/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180429Z&X-Amz-Expires=3600&X-Amz-Signature=a8885e2e4d9b65853f39dbe499f96efa5e704be955308aca197420a516e0612d&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <p>这里我们要关注几个参数：</p>
 <ol>
 <li>1μ（平均值）决定了最高点的位置x轴上的偏移量。</li>
@@ -403,13 +420,13 @@
 
 
 <p><strong>数据映射</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/9b82b55711d867cc1bd4dfcd991365fa.png" srcset="/img/loading.gif" lazyload alt="1567748640065-fc0616af-306f-4808-887f-e3d8faa8bcd3.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567748640065-fc0616af-306f-4808-887f-e3d8faa8bcd3.png?x-oss-process=image/format,webp/resize,w_1500,limit_0" srcset="/img/loading.gif" lazyload alt="1567748640065-fc0616af-306f-4808-887f-e3d8faa8bcd3.png"></p>
 <p>通过将 -2.5 ~ 2.5 的接口数据，映射到 0~100 我们通过方程计算得知</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// x 为输入值 </span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">scaleMap</span>(<span class="hljs-params">x</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>((<span class="hljs-number">20</span> * x) + <span class="hljs-number">50</span>)<br>  &#125;<br></code></pre></td></tr></table></figure>
 
 
 <p><strong>图例动态高度</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/07e3f0e90161bb66d9623e72d92c0136.png" srcset="/img/loading.gif" lazyload alt="1567751903041-fff1eb54-a6df-4bd3-9243-6c14fedc208c.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567751903041-fff1eb54-a6df-4bd3-9243-6c14fedc208c.png?x-oss-process=image/format,webp/resize,w_802,limit_0" srcset="/img/loading.gif" lazyload alt="1567751903041-fff1eb54-a6df-4bd3-9243-6c14fedc208c.png"></p>
 <p>图例部分是使用dom实现的，这部分由G2的 chart.guide() API 提供，它的宽高都是像素px，这边我们没定义相应的数据到尺寸的比例尺，因为基本没用上，所以这部分稍微偷了下懒，毕竟在pc端也没有响应式缩放，所以就给对应的坐标乘以了一个系数去实现类似的根据不同的数据展示不同的高度。</p>
 <p>html片段：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs typescript">**<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;region&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width:23.8px;height:$&#123;lineGenerate(drawX) * adjustValue&#125;px;&quot;</span>&gt;</span>**</span><br></code></pre></td></tr></table></figure>
@@ -421,32 +438,32 @@
 
 <p>完整示例：<a target="_blank" rel="noopener" href="https://codepen.io/danielchan27/pen/YzKYENw?editors=1011">codePen - areaChart</a></p>
 <h3 id="环形进度条-1"><a href="#环形进度条-1" class="headerlink" title="环形进度条"></a>环形进度条</h3><p>而绘制环形进度条我参考了<a target="_blank" rel="noopener" href="https://www.yuque.com/chentianyu/ykdmaz/tt8afr/edit">G2-仪表盘</a>结果半天没写出来，主要是 这个仪表盘使用了取巧的办法，其实质上还是使用了chart去做，对坐标轴采用了极坐标的变换，所以看上去像环形进度条，最难实现的就是首末两段的圆角部分，切差距比较大，遂弃。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/07af33a0ef37e482bfd6a5bc412f30b4.png" srcset="/img/loading.gif" lazyload alt="1567754481251-27cb8214-8470-4b6e-87a7-7881ea3318a0.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/193055/1567754481251-27cb8214-8470-4b6e-87a7-7881ea3318a0.png?x-oss-process=image/format,webp/resize,w_766,limit_0" srcset="/img/loading.gif" lazyload alt="1567754481251-27cb8214-8470-4b6e-87a7-7881ea3318a0.png"></p>
 <h3 id="注册自定义图形"><a href="#注册自定义图形" class="headerlink" title="注册自定义图形"></a>注册自定义图形</h3><p>但是G2除了能绘制图表以为，还通过了Shape.shape实现了<a target="_blank" rel="noopener" href="https://www.yuque.com/antv/g2-docs/api-shape">自定义图形</a>的绘制，具体有以下几种</p>
 <ul>
 <li><strong>point：</strong>点的绘制很简单，只要获取它的坐标以及大小即可，其中的 size 属性代表的是点的半径。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/aa081a50c441a0e8e054e96577defe40.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/a20fd59d-1c5e-4f57-8d60-5834892d0f4b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=1b39757f5fb57da3462fd06fc24a96e92b63108e3e530c56c4756dc7ff0b286d&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>line：</strong>线其实是由无数个点组成，在 G2 中我们将参与绘制的各个数据转换成坐标上的点然后通过线将逐个点连接而成形成线图，其中的 size 属性代表的是线的粗细。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/a1f4c92c27d1f371cd181d106c52ac30.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/8d2f362a-ef18-49d6-8fe5-adf2824c22d3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=729085c110d25bed7d21f4881f3106276670ff6833c560c80592f4d87c637414&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>area：</strong>area 面其实是在 line 线的基础之上形成的, 它将折线图中折线与自变量坐标轴之间的区域使用颜色或者纹理填充。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/405fe7f32022b39b8e880529ec88150c.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/7f77c8e9-e71b-4718-b433-c202d600438c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=6e92cf27a0e95bf9c39dc01b2be67b42c2c14ec62aba8ccc5f596c262fa404f4&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>interval：</strong>interval 默认的图形形状是矩形，而矩形实际是由四个点组成的，在 G2 中我们根据 pointInfo 中的 x、y、size 以及 y0 这四个值来计算出这四个点，然后顺时针连接而成。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/278787656dd26accc462362be0420743.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/409672f4-4e78-408f-b97b-607fa3f31f93/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=d46203ce3b6bef04d1098fa3590e25ac62f8fc34f49e58a7f0d5d57b43f15e66&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>polygon：</strong>polygon 多边形其实也是由多个点连接而成，在 pointInfo 中 x 和 y 都是数组结构。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/713883cf91082ff07ec92319eb997dfc.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/61dc78ea-91f0-463a-b52e-a0f6f6b975ef/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=20ba279e331ceecd6c6ab2cf44224a1ddaa9a704aba81b60e5bbe4fbe2042b01&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>schema：</strong>schema 作为一种自定义的几何图形，在 G2 中默认提供了 box 和 candle 两种 shape，分别用于绘制箱型图和股票图，注意这两种形状的矩形部分四个点的连接顺序都是顺时针，并且起始点均为左下角，这样就可以无缝转换至极坐标。</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/danni-cool/my-blog@master/image/d163a1c014adf0df93415af5f116708c.png" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/1b1cb23d-2336-46ed-bd50-bf151d9e71f2/d15b1abd-f0cc-4675-a1b9-bf4fe3ede54e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI/20240505/us-west-2/s3/aws4_request&X-Amz-Date=20240505T180426Z&X-Amz-Expires=3600&X-Amz-Signature=4a3f71fd3a2adba1ef6486af6f8da5e39fe135dcaada93d45d46c2c54e0f1537&X-Amz-SignedHeaders=host&x-id=GetObject" srcset="/img/loading.gif" lazyload alt="Untitled.png"></p>
 <ul>
 <li><strong>edge：</strong>edge 边同 line 线一致，区别就是 edge 是一个线段，连接边的两个端点即可。</li>
 </ul>
@@ -541,7 +558,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>G2实现大数据展示模块</div>
-      <div>http://example.com/2019/09/06/G2实现大数据展示模块/</div>
+      <div>http://example.com/2019/09/05/G2实现大数据展示模块/</div>
     </div>
     <div class="license-meta">
       
@@ -585,7 +602,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/09/10/%E5%9F%BA%E4%BA%8E%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%94%B9%E9%80%A0/" title="基于多页项目的微前端改造">
+                      <a href="/2021/09/09/%E5%9F%BA%E4%BA%8E%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%94%B9%E9%80%A0/" title="基于多页项目的微前端改造">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">基于多页项目的微前端改造</span>
                         <span class="visible-mobile">上一篇</span>
