@@ -485,10 +485,15 @@ sup > a::before,
 .banner-text .typed-cursor {
   margin: 0 0.2rem;
 }
+@media (min-width: 767px) {
+  #subtitle {
+    font-size: 3rem;
+  }
+}
 @media (max-width: 767px) {
   #subtitle,
   .typed-cursor {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
 @media (max-width: 575px) {
@@ -497,11 +502,8 @@ sup > a::before,
   }
   #subtitle,
   .typed-cursor {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
   }
-}
-#subtitle {
-  font-size: 3rem;
 }
 .styles_logoMask {
   stroke: #fff;
