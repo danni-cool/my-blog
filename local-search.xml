@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>How I Saved My Work Accidentally Discarded Using VSCode</title>
+    <link href="/2024/08/08/How%20I%20Saved%20My%20Work%20Accidentally%20Discarded%20Using%20VSCode/"/>
+    <url>/2024/08/08/How%20I%20Saved%20My%20Work%20Accidentally%20Discarded%20Using%20VSCode/</url>
+    
+    <content type="html"><![CDATA[<p>Today, when I was dealing with my work progress, I accidentally discard all the files I wanted to commit, because part of the code was just compiled locally and didn’t need to submit.</p><p>At that moment,  I really wanted to die, because this is the result of a day’s work.</p><p><img src="https://cdn.danni.cool/file/f96e6d89526f6f62ed0d70898a273e47.png" alt="Untitled.png"></p><h1 id="Life-still-goes-on"><a href="#Life-still-goes-on" class="headerlink" title="Life still goes on"></a>Life still goes on</h1><p>Because all the files did not commit to git,  git is certainly unable to help, so I’m checking the IDE to see if there‘s any black magic, I’ve discovered that VSCode has a powerful file history function. Interesting, this looks promising.</p><p>Firstly, I’m relieved to confirm that I already turned on the Local History in the settings, I remember this being the default setting, which I haven’t changed.</p><p><img src="https://cdn.danni.cool/file/842718c052d9041fe6415e0340f027df.jpg" alt="Jietu20240808-225408.jpg"></p><p>The corresponding file path is in  <code>/Users/yourname/Library/Application\ Support/Code/User/History</code> , after opening it includes a bunch of md5 named folders.</p><p><img src="https://cdn.danni.cool/file/7e951b4d3d3e94e5af001b396a90f49e.png" alt="Untitled.png"></p><p>For easier searching, it is recommended to use the list view and descending order by modification date，Open the first <code>entries.json</code> , I realized it records the relationship between the source file and all the historical files named by their hashes., I tried to recover the latest one.</p><p><img src="https://cdn.danni.cool/file/43f79dba73638cc3ec7771ef0fe6d65b.png" alt="Untitled.png"></p><p>After saving and git diff，the file content is exactly what I discorded before，just based on this point alone, VSCode deserves the highest praise😎!  It truly lives up to its reputation as the universal IDE.</p><h1 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h1><p>Valuing my life, I choose to use  👑 <a href="https://code.visualstudio.com/"><strong>vscode</strong></a> <strong>👑</strong></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Tech</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vscode</tag>
+      
+      <tag>IDE</tag>
+      
+      <tag>Code Recovery</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Fixed the broken search in nextjs-notion-starter-kit</title>
     <link href="/2023/10/17/Fixed%20the%20broken%20search%20in%20nextjs-notion-starter-kit/"/>
     <url>/2023/10/17/Fixed%20the%20broken%20search%20in%20nextjs-notion-starter-kit/</url>
