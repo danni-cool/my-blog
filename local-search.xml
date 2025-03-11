@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>AI 时代下个人工作的畅想</title>
+    <link href="/2025/03/11/AI%20%E6%97%B6%E4%BB%A3%E4%B8%8B%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E7%9A%84%E7%95%85%E6%83%B3/"/>
+    <url>/2025/03/11/AI%20%E6%97%B6%E4%BB%A3%E4%B8%8B%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E7%9A%84%E7%95%85%E6%83%B3/</url>
+    
+    <content type="html"><![CDATA[<p>最近用 cursor 编码了一个月以及近 3 个月的 AI 编码工具（vscode + copilot &#x2F; roof、windsurf、cursor）的感受是 “<strong>AI短期内不会取代程序员</strong>”。</p><p>我的理由是除了企业里专门为了特定场景优化的ai项目，个人靠它几乎无法一句话完成整个项目的交付。</p><p>打开 AI 工具，给我实现啥啥，从 0 到 1 很简单，一个个 demo 几秒钟的时间就拔地而起。但是从 1 到 100 可太难了，中间涉及到大量的调试，提示词的改进，问题场景的排查，以及给它补充它不知道的知识。不然死活达不到你要的效果。</p><p>因为这些需要依赖一个从业多年人在行业知识经验的积累。 你可以理解现阶段的 AI 是一个“饱读诗书的百科全书式的天才”，但是还没有下地干过很多活。所以首先你得是一个教练，AI才会在你指导下实现你想要的效果。</p><p>但是开了 AI 这个潘多拉魔盒，大概率是回不去了，商业是讲究效率至上的。当有一天老板给一个需求，人家用 AI 工时可以比你少一半的时候，是不是也不需要那么多人来干活了🤔，你创办一家企业，你的竞争对手比你提前一半的时间交付了项目，成本还低30%，你是不是就失去这个客户了？所以这才是每个人需要深度思考的问题。</p><p>每一次效率的革命蕴藏着许多机会，也伴随着大量的岗位的消亡，从蒸汽时代下岗的手工纺纱工人，到通讯技术革新消失的电话接线员，再到AI时代下冲击的各行各业的现在。</p><p>所以我还是很赞同那句话 —— AI 取代的不是你的工作，而是 AI 取代了不会用 AI 人的工作。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Thought</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>How I Saved My Work Accidentally Discarded Using VSCode</title>
     <link href="/2024/08/08/How%20I%20Saved%20My%20Work%20Accidentally%20Discarded%20Using%20VSCode/"/>
     <url>/2024/08/08/How%20I%20Saved%20My%20Work%20Accidentally%20Discarded%20Using%20VSCode/</url>
